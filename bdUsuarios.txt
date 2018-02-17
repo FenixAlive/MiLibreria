@@ -1,0 +1,5 @@
+angel|12/09/1988|luis|1234|mail.com
+luis angel|27/09/1988|fenix|1234|dropbox.com
+alan|01/01/1999|alan|1234|correo
+adrian|09/09/1996|adrian|adri23|correo2
+ana lia|12/08/2013|analia|1234|correo3

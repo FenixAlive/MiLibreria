@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Perfil</class>
+ <widget class="QDialog" name="Perfil">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>270</width>
+    <height>485</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Droid Sans</family>
+    <pointsize>9</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Mi Libreria</string>
+  </property>
+  <property name="windowOpacity">
+   <double>0.970000000000000</double>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #333;
+color: #f1f1f1;</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="perfilLabel">
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>Perfil</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="usuarioLabel">
+     <property name="text">
+      <string>Usuario</string>
+     </property>
+     <property name="buddy">
+      <cstring>usuarioInputPerfil</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="usuarioInputPerfil">
+     <property name="styleSheet">
+      <string notr="true">background-color: #535353;
+color:#f1f1f1;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Usuario</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="nombreLabel">
+     <property name="text">
+      <string>Nombre Completo</string>
+     </property>
+     <property name="buddy">
+      <cstring>usuarioInputPerfil</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="nombreInputPerfil">
+     <property name="styleSheet">
+      <string notr="true">background-color: #535353;
+color:#f1f1f1;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Nombre Completo</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="fechaLabel">
+     <property name="text">
+      <string>Fecha Nacimiento</string>
+     </property>
+     <property name="buddy">
+      <cstring>usuarioInputPerfil</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDateEdit" name="fechaInputPerfil">
+     <property name="styleSheet">
+      <string notr="true">background-color: #535353;
+color: #f1f1f1;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="displayFormat">
+      <string>dd/MM/yyyy</string>
+     </property>
+     <property name="date">
+      <date>
+       <year>2018</year>
+       <month>1</month>
+       <day>1</day>
+      </date>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="contrasenaLabel">
+     <property name="text">
+      <string>Contraseña</string>
+     </property>
+     <property name="buddy">
+      <cstring>usuarioInputPerfil</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="contrasenaInputPerfil">
+     <property name="styleSheet">
+      <string notr="true">background-color: #535353;
+color:#f1f1f1;</string>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::PasswordEchoOnEdit</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Contraseña</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="correoLabel">
+     <property name="text">
+      <string>Correo</string>
+     </property>
+     <property name="buddy">
+      <cstring>usuarioInputPerfil</cstring>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="correoInputPerfil">
+     <property name="styleSheet">
+      <string notr="true">background-color: #535353;
+color:#f1f1f1;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Correo</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="guardarBotonPerfil">
+     <property name="font">
+      <font>
+       <family>Droid Sans</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#999;
+color:#333;</string>
+     </property>
+     <property name="text">
+      <string>Guardar Cambios</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="cancelarBotonPerfil">
+     <property name="font">
+      <font>
+       <family>Droid Sans</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:#999;
+color:#333;</string>
+     </property>
+     <property name="text">
+      <string>Cancelar</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>cancelarBotonPerfil</sender>
+   <signal>clicked()</signal>
+   <receiver>Perfil</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>463</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>92</x>
+     <y>421</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

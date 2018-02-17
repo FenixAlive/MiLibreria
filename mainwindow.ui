@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mi Libreria</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #333;
+color: white;</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="styleSheet">
+         <string notr="true">background-color: #535353;
+border-radius: 12px;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="placeholderText">
+         <string>Buscar ...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/img/buscar.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="2">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string notr="true">background-color: #f3f3f3;</string>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>440</width>
+         <height>205</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuInicio">
+    <property name="title">
+     <string>Inicio</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionTodos"/>
+    <addaction name="actionMis_Libros"/>
+    <addaction name="actionFavoritos"/>
+    <addaction name="actionPerfil"/>
+    <addaction name="separator"/>
+    <addaction name="actionSalir"/>
+   </widget>
+   <widget class="QMenu" name="menuCategorias">
+    <property name="title">
+     <string>Categorias</string>
+    </property>
+    <addaction name="actionAntolog_a"/>
+    <addaction name="actionBiograf_a"/>
+    <addaction name="actionDrama"/>
+    <addaction name="actionExpositivo"/>
+    <addaction name="actionEpistolar"/>
+    <addaction name="actionNarrativa"/>
+    <addaction name="actionObra_gr_fica"/>
+    <addaction name="actionPoes_a"/>
+    <addaction name="actionReferencia"/>
+    <addaction name="actionCl_sico"/>
+   </widget>
+   <widget class="QMenu" name="menuConfiguraci_n">
+    <property name="title">
+     <string>Configuración</string>
+    </property>
+    <addaction name="actionCargar_Usuarios"/>
+    <addaction name="actionCargar_Libros"/>
+    <addaction name="separator"/>
+    <addaction name="actionAcerca_De"/>
+   </widget>
+   <addaction name="menuInicio"/>
+   <addaction name="menuCategorias"/>
+   <addaction name="menuConfiguraci_n"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionTodos"/>
+   <addaction name="actionMis_Libros"/>
+   <addaction name="actionFavoritos"/>
+   <addaction name="actionPerfil"/>
+   <addaction name="actionSalir"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionFavoritos">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/fav.png</normaloff>:/images/img/fav.png</iconset>
+   </property>
+   <property name="text">
+    <string>Favoritos</string>
+   </property>
+  </action>
+  <action name="actionPerfil">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/perfil.png</normaloff>:/images/img/perfil.png</iconset>
+   </property>
+   <property name="text">
+    <string>Perfil</string>
+   </property>
+  </action>
+  <action name="actionSalir">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/salir.png</normaloff>:/images/img/salir.png</iconset>
+   </property>
+   <property name="text">
+    <string>Salir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionTodos">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/todoslibros.png</normaloff>:/images/img/todoslibros.png</iconset>
+   </property>
+   <property name="text">
+    <string>Todos</string>
+   </property>
+  </action>
+  <action name="actionMis_Libros">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/mislibros.png</normaloff>:/images/img/mislibros.png</iconset>
+   </property>
+   <property name="text">
+    <string>Mis Libros</string>
+   </property>
+  </action>
+  <action name="actionAntolog_a">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/whitebook.png</normaloff>:/images/img/whitebook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Antología</string>
+   </property>
+  </action>
+  <action name="actionBiograf_a">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/greybook.png</normaloff>:/images/img/greybook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Biografía</string>
+   </property>
+  </action>
+  <action name="actionDrama">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/whitebook.png</normaloff>:/images/img/whitebook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Drama</string>
+   </property>
+  </action>
+  <action name="actionExpositivo">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/greybook.png</normaloff>:/images/img/greybook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Expositivo</string>
+   </property>
+  </action>
+  <action name="actionEpistolar">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/whitebook.png</normaloff>:/images/img/whitebook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Epistolar</string>
+   </property>
+  </action>
+  <action name="actionNarrativa">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/greybook.png</normaloff>:/images/img/greybook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Narrativa</string>
+   </property>
+  </action>
+  <action name="actionObra_gr_fica">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/whitebook.png</normaloff>:/images/img/whitebook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Obra gráfica</string>
+   </property>
+  </action>
+  <action name="actionPoes_a">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/greybook.png</normaloff>:/images/img/greybook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Poesía</string>
+   </property>
+  </action>
+  <action name="actionReferencia">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/whitebook.png</normaloff>:/images/img/whitebook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Referencia</string>
+   </property>
+  </action>
+  <action name="actionCl_sico">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/greybook.png</normaloff>:/images/img/greybook.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clásico</string>
+   </property>
+  </action>
+  <action name="actionCargar_Usuarios">
+   <property name="text">
+    <string>Cargar Usuarios</string>
+   </property>
+  </action>
+  <action name="actionAcerca_De">
+   <property name="text">
+    <string>Acerca De</string>
+   </property>
+  </action>
+  <action name="actionCargar_Libros">
+   <property name="text">
+    <string>Cargar Libros</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="assets.qrc"/>
+ </resources>
+ <connections/>
+</ui>
