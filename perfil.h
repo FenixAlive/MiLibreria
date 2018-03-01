@@ -23,7 +23,7 @@ private slots:
     void on_guardarBotonPerfil_clicked();
 
 signals:
-    void guardarPerfilSignal();
+    void guardarPerfilSignal(QString usu);
 
 private:
     Ui::Perfil *ui;

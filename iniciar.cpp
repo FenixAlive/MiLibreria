@@ -20,6 +20,8 @@ Iniciar::~Iniciar()
 void Iniciar::on_iniciarBoton_clicked()
 {
     QMessageBox mes;
+    mes.setStyleSheet("background-color:#333; color:white;");
+    mes.setWindowTitle("Advertencia");
     if(ui->contrasenaInput->text().count()<4){
         mes.setText("Revisa la contraseña\n");
     }

@@ -1,7 +1,6 @@
 #include "perfil.h"
 #include "ui_perfil.h"
 #include <QMessageBox>
-#include <QFile>
 
 Perfil::Perfil(QWidget *parent) :
     QDialog(parent),
@@ -35,6 +34,8 @@ void Perfil::guardarCambios(Usuario *usu){
 void Perfil::on_guardarBotonPerfil_clicked()
 {
     QMessageBox m;
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("Advertencia");
     //usuario, nombre, fecha, contraseña, correo
     int count = 0;
     if(ui->usuarioInputPerfil->text().count()>3){
@@ -57,12 +58,9 @@ void Perfil::on_guardarBotonPerfil_clicked()
     }else{
         m.setText("Ingresa un correo valido");
     }
-
     if(count == 4){
-        //revisar si no esta duplicado
-        this->close();
-        m.setText("Cambios realizados Correctamente");
-        emit guardarPerfilSignal();
+        emit guardarPerfilSignal(ui->usuarioInputPerfil->text());
+    }else{
+        m.exec();
     }
-    m.exec();
 }

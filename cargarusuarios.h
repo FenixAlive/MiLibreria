@@ -2,6 +2,7 @@
 #define CARGARUSUARIOS_H
 
 #include <QDialog>
+#include <QFileSystemModel>
 
 namespace Ui {
 class CargarUsuarios;
@@ -20,11 +21,14 @@ private slots:
 
     void on_botones_rejected();
 
+    void on_buscarTree_clicked(const QModelIndex &index);
+
 signals:
     void carUsuRuta(QString ruta);
 
 private:
     Ui::CargarUsuarios *ui;
+    QFileSystemModel *filemodel;
 };
 
 #endif // CARGARUSUARIOS_H

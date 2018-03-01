@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>333</width>
-    <height>170</height>
+    <width>573</width>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Cargar Usuarios</string>
+  </property>
+  <property name="windowOpacity">
+   <double>0.970000000000000</double>
   </property>
   <property name="styleSheet">
    <string notr="true">color: white;
@@ -19,6 +22,9 @@ background-color: #333;</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
+    <widget class="QTreeView" name="buscarTree"/>
+   </item>
+   <item row="2" column="0">
     <widget class="QLineEdit" name="rutaInput">
      <property name="styleSheet">
       <string notr="true">background-color: #535353;</string>
@@ -47,32 +53,6 @@ background-color: #333;</string>
       <string>Ruta del archivo a cargar:</string>
      </property>
     </widget>
-   </item>
-   <item row="2" column="0">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="4" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

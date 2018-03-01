@@ -35,12 +35,21 @@ Principal::Principal(QObject *parent) : QObject(parent)
     QObject::connect(w, SIGNAL(cargarUsuario()),
                      this, SLOT(cargarUsuShow()));
 
-    QObject::connect(perf, SIGNAL(guardarPerfilSignal()),
-                     this, SLOT(guardarPerfil()));
+    QObject::connect(w, SIGNAL(buscarLibrosInputSignal(QString, int)),
+                     this, SLOT(buscarLibrosSignal(QString, int)));
+
+    QObject::connect(perf, SIGNAL(guardarPerfilSignal(QString)),
+                     this, SLOT(guardarPerfil(QString)));
 
     QObject::connect(carUsu, SIGNAL(carUsuRuta(QString)),
                      this, SLOT(carUsuBase(QString)));
 
+}
+
+void Principal::comenzar(){
+    leerBDUsuarios(getDirbd());
+    leerBDLibros(getDirbdLibros()+"fenix.txt");
+    ini->show();
 }
 
 //metodos de funcion
@@ -76,10 +85,41 @@ void Principal::leerBDUsuarios(QString ruta){
     }
     bd.close();
 }
-void Principal::comenzar(){
-    leerBDUsuarios(getDirbd());
-    ini->show();
+
+void Principal::leerBDLibros(QString ruta)
+{
+    QFile bd;
+    bd.setFileName(ruta);
+    if(!bd.exists()){
+        qDebug() <<"El archivo no existe";
+    }else{
+        bd.open(QIODevice::ReadOnly | QIODevice::Text);
+        if(!bd.isOpen()){
+            qDebug() <<"El archivo no se pudo abrir";
+        }else{
+            QString temp;
+            temp = bd.readAll();
+            QList <QString> tempList = temp.split("\n");
+            //agregar la información a la lista
+            QList <QString> tempLibroList;
+            LibroData l;
+            foreach(QString t, tempList){
+                tempLibroList = t.split("|");
+                if(tempLibroList[0] != ""){
+                    //guardar datos en un tipo usuario y agregar el usuario a la lista
+                    l.setTitulo(tempLibroList[0]);
+                    l.setAutor(tempLibroList[1]);
+                    l.setAnio(tempLibroList[3]);
+                    l.setEditorial(tempLibroList[2]);
+                    l.setCategoria(tempLibroList[4]);
+                    libros.append(l);
+                }
+            }
+       }
+    }
+    bd.close();
 }
+
 //slots
 void Principal::regUsuShow(){
     reg->show();
@@ -91,6 +131,16 @@ void Principal::iniUsuShow(){
 void Principal::perfilShow(){
     perf->show();
     perf->agregarInfo(usuarios[getUsuarioActual()]);
+}
+
+QString Principal::getDirbdLibros() const
+{
+    return dirbdLibros;
+}
+
+void Principal::setDirbdLibros(const QString &value)
+{
+    dirbdLibros = value;
 }
 
 void Principal::cargarUsuShow()
@@ -145,6 +195,8 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
     int count = 0;
     QList<Usuario>::iterator it=usuarios.begin();
     QMessageBox m;
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("Advertencia");
     while(it != usuarios.end()){
         if(it->getUsuario()==user){
             m.setText("El Usuario ya existe");
@@ -155,7 +207,6 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
         count++;
     }
     if(it == usuarios.end()){
-
         Usuario u;
         u.setNombre(nom);
         u.setUsuario(user);
@@ -179,6 +230,7 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
             bd.flush();
             bd.close();
         }
+        m.setWindowTitle("MiLibreria");
         m.setText("Registrado Correctamente");
         m.exec();
         setUsuarioActual(count);
@@ -186,15 +238,19 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
         w->show();
     }
 }
+
 void Principal::iniciarSesion(QString user, QString pass){
     QList<Usuario>::iterator it=usuarios.begin();
     QMessageBox m;
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("Advertencia");
     int count = 0;
     while(it != usuarios.end()){
         if(it->getUsuario()==user && it->getContrasena()==pass){
             w->show();
             ini->close();
             setUsuarioActual(count);
+            //leer bd libros
             break;
         }
         ++it;
@@ -209,6 +265,8 @@ void Principal::iniciarSesion(QString user, QString pass){
 void Principal::carUsuBase(QString ruta)
 {
    QMessageBox m;
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("MiLibreria");
    //lee la base de datos y agrega los usuarios a la lista
    leerBDUsuarios(ruta);
    //buscar y eliminar repetidos
@@ -233,10 +291,68 @@ void Principal::carUsuBase(QString ruta)
 
 }
 
-void Principal::guardarPerfil()
+void Principal::guardarPerfil(QString usu)
 {
-    perf->guardarCambios(&usuarios[getUsuarioActual()]);
-    guardarBD(usuarios);
+    QMessageBox m;
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("MiLibreria");
+    if(!revisarRepetidoPerfil(usu)){
+        //si no esta repetido
+        perf->guardarCambios(&usuarios[getUsuarioActual()]);
+        guardarBD(usuarios);
+        m.setText("Usuario Guardado Exitosamente");
+        m.exec();
+        perf->close();
+    }else{
+        m.setWindowTitle("Advertencia");
+        m.setText("El Usuario ya existe, elija otro");
+        m.exec();
+    }
 }
 
-//line.trimmed() quita saltos de linea de la cadena
+int Principal::revisarRepetidoPerfil(QString usu){
+   //Ver si no esta repetido
+   int c=0;
+   foreach(Usuario us, usuarios){
+        if(usu == us.getUsuario() && usu != usuarios[getUsuarioActual()].getUsuario()){
+               c++;
+         }
+    }
+    if(c){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+void Principal::buscarLibrosSignal(QString li, int que)
+{
+    int mostrar = 0;
+    foreach(LibroData lib, libros){
+        mostrar = 0;
+        if(!que || que == 1)
+            if(lib.getTitulo().contains(li, Qt::CaseInsensitive)){
+                mostrar = 1;
+            }
+        if(!que || que == 2)
+            if(lib.getAutor().contains(li, Qt::CaseInsensitive)){
+                mostrar = 1;
+            }
+        if(!que || que == 3)
+            if(lib.getAnio().contains(li, Qt::CaseInsensitive)){
+                mostrar = 1;
+            }
+        if(!que || que == 4)
+            if(lib.getEditorial().contains(li, Qt::CaseInsensitive)){
+                mostrar = 1;
+            }
+        if(!que || que == 5)
+            if(lib.getCategoria().contains(li, Qt::CaseInsensitive)){
+                mostrar = 1;
+            }
+
+        if(mostrar){
+            w->dibujarLibros(&lib);
+        }
+    }
+}

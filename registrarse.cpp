@@ -25,7 +25,8 @@ void Registrarse::on_iniciarBotonNuevo_clicked()
 void Registrarse::on_registrarmeBotonNuevo_clicked()
 {
     QMessageBox m;
-    //usuario, nombre, fecha, contraseña, correo
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("Advertencia");
     int count = 0;
     if(ui->usuarioInputNuevo->text().count()>3){
         count++;

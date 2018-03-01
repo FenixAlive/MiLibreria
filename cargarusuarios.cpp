@@ -7,6 +7,10 @@ CargarUsuarios::CargarUsuarios(QWidget *parent) :
     ui(new Ui::CargarUsuarios)
 {
     ui->setupUi(this);
+
+    filemodel = new QFileSystemModel(this);
+    filemodel->setRootPath("./");
+    ui->buscarTree->setModel(filemodel);
 }
 
 CargarUsuarios::~CargarUsuarios()
@@ -17,6 +21,8 @@ CargarUsuarios::~CargarUsuarios()
 void CargarUsuarios::on_botones_accepted()
 {
     QMessageBox m;
+    m.setStyleSheet("background-color:#333; color:white;");
+    m.setWindowTitle("Advertencia");
     if(ui->rutaInput->text().count() > 1){
         if(ui->rutaInput->text().split(".").last() == "txt"){
             emit carUsuRuta(ui->rutaInput->text());
@@ -33,4 +39,9 @@ void CargarUsuarios::on_botones_accepted()
 void CargarUsuarios::on_botones_rejected()
 {
    this->close();
+}
+
+void CargarUsuarios::on_buscarTree_clicked(const QModelIndex &index)
+{
+    ui->rutaInput->setText(QString(filemodel->fileInfo(index).absoluteFilePath()));
 }

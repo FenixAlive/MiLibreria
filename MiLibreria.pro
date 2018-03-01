@@ -31,7 +31,9 @@ SOURCES += \
     perfil.cpp \
     principal.cpp \
     usuario.cpp \
-    cargarusuarios.cpp
+    cargarusuarios.cpp \
+    libro.cpp \
+    librodata.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,14 +42,17 @@ HEADERS += \
     perfil.h \
     principal.h \
     usuario.h \
-    cargarusuarios.h
+    cargarusuarios.h \
+    libro.h \
+    librodata.h
 
 FORMS += \
         mainwindow.ui \
     iniciar.ui \
     registrarse.ui \
     perfil.ui \
-    cargarusuarios.ui
+    cargarusuarios.ui \
+    libro.ui
 
 RESOURCES += \
     assets.qrc
