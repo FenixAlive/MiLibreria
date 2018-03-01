@@ -29,6 +29,7 @@ void Iniciar::on_iniciarBoton_clicked()
         mes.setText("Revisa tu usuario\n");
     }
     if(ui->contrasenaInput->text().count()>3 && ui->usuarioInput->text().count()>3){
+        //si todo esta correcto emite la señal para revisar el usuario e iniciar sesión
         emit iniciar(ui->usuarioInput->text(), ui->contrasenaInput->text());
     }else{
         mes.exec();
@@ -39,6 +40,7 @@ void Iniciar::on_iniciarBoton_clicked()
 
 void Iniciar::on_registrarmeBoton_clicked()
 {
+    //emite la señal para abrir la ventana de registrar usuario
     this->close();
     emit botonReg();
 }

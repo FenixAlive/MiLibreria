@@ -5,6 +5,8 @@ Usuario::Usuario()
 
 }
 
+//getters and setters
+
 QString Usuario::getNombre() const
 {
     return nombre;

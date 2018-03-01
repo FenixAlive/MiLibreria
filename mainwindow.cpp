@@ -16,33 +16,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::dibujarLibros(LibroData *lib)
-{
-        //crear lista widget, el padre es el mismo
-        QListWidgetItem *listWidgetItem = new QListWidgetItem(ui->listLibrosWidget);
-        //agregando el item al listwidget
-        ui->listLibrosWidget->addItem(listWidgetItem);
-        //creando objeto del widget a agregar
-        Libro *libroItem = new Libro;
-        libroItem->setDatos(lib);
-        //agregar el item
-        ui->listLibrosWidget->setItemWidget(listWidgetItem, libroItem);
-}
+//salir de la apliciación
 
 void MainWindow::on_actionSalir_triggered()
 {
     this->close();
 }
 
+//emitir señal para abrir la ventana de perfil desde principal
+
 void MainWindow::on_actionPerfil_triggered()
 {
     emit botonPerfil();
 }
 
+//emite señal para abrir ventana de cargarUsuario desde principal
+
 void MainWindow::on_actionCargar_Usuarios_triggered()
 {
    emit cargarUsuario();
 }
+
+//abre messagebox con acerca de
 
 void MainWindow::on_actionAcerca_De_triggered()
 {
@@ -53,21 +48,46 @@ void MainWindow::on_actionAcerca_De_triggered()
     acerca.exec();
 }
 
+// función que dibuja un libro a la vez en la lista widget
+
+void MainWindow::dibujarLibros(LibroData *lib)
+{
+        //crear lista widget, el padre es el mismo
+        QListWidgetItem *listWidgetItem = new QListWidgetItem(ui->listLibrosWidget);
+
+        //agregando el item al listwidget
+        ui->listLibrosWidget->addItem(listWidgetItem);
+
+        //creando objeto del widget a agregar
+        Libro *libroItem = new Libro;
+        libroItem->setDatos(lib);
+
+        //agregar el item
+        ui->listLibrosWidget->setItemWidget(listWidgetItem, libroItem);
+}
+
+//función que corre al cambiar el texto en el buscador de libros
+
 void MainWindow::on_buscarInput_textChanged(const QString &arg1)
 {
+    //limpia la lista de libros
     ui->listLibrosWidget->clear();
+
+    //revisa si el texto no esta vacio
     if(arg1 != ""){
+        //escribe en el label debajo del buscador un titulo
         ui->resTitulo->setText("Resultados de la busqueda:");
+        // emite señal con la palabra a buscar y con la clave 0 que busca en todos los datos
         emit buscarLibrosInputSignal(arg1, 0);
     }else{
         ui->resTitulo->setText("");
     }
 }
 
-void MainWindow::on_actionCargar_Libros_triggered()
-{
-    //hacer señal para una nueva clase semejante a cargar usuarios
-}
+//al dar clic en las categorias se hace lo siguiente:
+//se limpia la lista de widgets
+//se pone el titulo de la categoria en el label debajo del buscador
+//se emite la señal con la categoria a buscar y la clave 5 que busca solo categoria
 
 void MainWindow::on_actionAntolog_a_triggered()
 {

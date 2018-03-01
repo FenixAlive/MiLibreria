@@ -6,6 +6,8 @@ LibroData::LibroData()
 
 }
 
+//getters and setters
+
 QString LibroData::getTitulo() const
 {
     return titulo;

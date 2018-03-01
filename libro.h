@@ -14,7 +14,7 @@ class Libro : public QWidget
 
 public:
     explicit Libro(QWidget *parent = 0);
-    void setDatos(LibroData *lib);
+    void setDatos(LibroData *lib); //función para agregar los datos de un libro al widget
     ~Libro();
 
 

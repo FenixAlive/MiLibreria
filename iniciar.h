@@ -17,13 +17,13 @@ public:
     ~Iniciar();
 
 private slots:
-    void on_iniciarBoton_clicked();
+    void on_iniciarBoton_clicked(); //boton de iniciar sesión
 
-    void on_registrarmeBoton_clicked();
+    void on_registrarmeBoton_clicked(); //boton para registrar usuario
 
 signals:
-    void iniciar(QString user, QString pass);
-    void botonReg();
+    void iniciar(QString user, QString pass); //envia una señal a principal para revisar los datos del usuario y buscarlo
+    void botonReg(); //envia una señal a principal para abrir la ventana de registrar
 
 private:
     Ui::Iniciar *ui;

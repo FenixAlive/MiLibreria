@@ -24,7 +24,7 @@ public:
     QString getCategoria() const;
     void setCategoria(const QString &value);
 
-private:
+private: //variables que guardará un libro
     QString titulo;
     QString autor;
     QString anio;

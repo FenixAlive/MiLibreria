@@ -14,14 +14,19 @@ Perfil::~Perfil()
     delete ui;
 }
 
+//función que agrega la información pasada en el usuario a los input del perfil
+
 void Perfil::agregarInfo(Usuario usuAct){
     ui->nombreInputPerfil->setText(usuAct.getNombre());
     ui->usuarioInputPerfil->setText(usuAct.getUsuario());
     ui->contrasenaInputPerfil->setText(usuAct.getContrasena());
+    //para poner la fecha se debe convertir el QString en Qdate
     QDate nac = QDate::fromString(usuAct.getNacimiento(), "dd/MM/yyyy");
     ui->fechaInputPerfil->setDate(nac);
     ui->correoInputPerfil->setText(usuAct.getCorreo());
 }
+
+//función que toma la dirección de memoria de un usuario y guarda los datos de los input en el
 
 void Perfil::guardarCambios(Usuario *usu){
     usu->setNombre(ui->nombreInputPerfil->text());
@@ -30,6 +35,8 @@ void Perfil::guardarCambios(Usuario *usu){
     usu->setNacimiento(ui->fechaInputPerfil->text());
     usu->setCorreo(ui->correoInputPerfil->text());
 }
+
+//al dar clic en el boton guardar revisa que los datos esten llenos correctamente y si es asi emite la señal con el usuario como parametro para revisar que no esta repetido en principal
 
 void Perfil::on_guardarBotonPerfil_clicked()
 {

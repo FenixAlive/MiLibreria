@@ -7,6 +7,8 @@ class Usuario
 {
 public:
     Usuario();
+
+    //getters and setters
     QString getNombre() const;
     void setNombre(const QString &value);
 
@@ -22,7 +24,7 @@ public:
     QString getCorreo() const;
     void setCorreo(const QString &value);
 
-private:
+private: //variables que guarda un usuario
     QString nombre;
     QString usuario;
     QString contrasena;

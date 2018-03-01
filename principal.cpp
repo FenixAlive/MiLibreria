@@ -3,16 +3,18 @@
 #include <QFile>
 #include <QDebug>
 
+//constructor
+
 Principal::Principal(QObject *parent) : QObject(parent)
 {
-    //crear objetos
+    //crear objetos de las clases
     ini = new Iniciar();
     reg = new Registrarse();
     w = new MainWindow();
     perf = new Perfil();
     carUsu = new CargarUsuarios();
 
-    //conectar señales
+    //conectar señales de las clases
 
     //Clase iniciar
     QObject::connect(ini, SIGNAL(iniciar(QString, QString)),
@@ -38,41 +40,88 @@ Principal::Principal(QObject *parent) : QObject(parent)
     QObject::connect(w, SIGNAL(buscarLibrosInputSignal(QString, int)),
                      this, SLOT(buscarLibrosSignal(QString, int)));
 
+    //clase perfil
     QObject::connect(perf, SIGNAL(guardarPerfilSignal(QString)),
                      this, SLOT(guardarPerfil(QString)));
 
+    //clase cargarUsuario
     QObject::connect(carUsu, SIGNAL(carUsuRuta(QString)),
                      this, SLOT(carUsuBase(QString)));
 
 }
 
+//función que corre al iniciar aplicación
+
 void Principal::comenzar(){
+    //lee la base de datos de usuarios
     leerBDUsuarios(getDirbd());
+
+    //lee la base de datos de libros
     leerBDLibros(getDirbdLibros()+"fenix.txt");
+
+    //abre la ventana de iniciar sesión
     ini->show();
 }
 
+//getter and setters de variables privadas de la clase
+
+QString Principal::getDirbdLibros() const
+{
+    return dirbdLibros;
+}
+
+void Principal::setDirbdLibros(const QString &value)
+{
+    dirbdLibros = value;
+}
+
+QString Principal::getDirbd() const
+{
+    return dirbd;
+}
+
+void Principal::setDirbd(const QString &value)
+{
+    dirbd = value;
+}
+
+int Principal::getUsuarioActual() const
+{
+    return usuarioActual;
+}
+
+void Principal::setUsuarioActual(int value)
+{
+    usuarioActual = value;
+}
+
 //metodos de funcion
+
+//función para leer la base de datos de usuarios y guardarla en la Qlist de usuarios
+
 void Principal::leerBDUsuarios(QString ruta){
-    QFile bd;
-    bd.setFileName(ruta);
-    if(!bd.exists()){
+    QFile bd; //crear QFile para leer base de datos
+    bd.setFileName(ruta); //agregarle la ruta a la base de datos
+    if(!bd.exists()){ //si no existe el archivo
         qDebug() <<"El archivo no existe";
     }else{
+        //Abrir base de datos en modo lectura
         bd.open(QIODevice::ReadOnly | QIODevice::Text);
-        if(!bd.isOpen()){
+        if(!bd.isOpen()){//si no se puede abrir
             qDebug() <<"El archivo no se pudo abrir";
         }else{
-            QString temp;
-            temp = bd.readAll();
-            QList <QString> tempList = temp.split("\n");
+            QString temp; //variable temporal
+            temp = bd.readAll(); //lee toda la base de datos
+            QList <QString> tempList = temp.split("\n"); //la separo por salto de linea y la guardo en una lista
             //agregar la información a la lista
-            QList<QString> tempUsuList;
-            Usuario u;
-            foreach(QString t, tempList){
-                tempUsuList = t.split("|");
-                if(tempUsuList[0] != ""){
-                    //guardar datos en un tipo usuario y agregar el usuario a la lista
+            QList<QString> tempUsuList; //crea una lista temporal
+            Usuario u; //crea un usuario temporal
+
+            foreach(QString t, tempList){ //por cada usuario en la lista temporal
+                tempUsuList = t.split("|"); //Separa la información por un pipe
+
+                if(tempUsuList[0] != ""){ //si no esta vacia la información del usuario
+                    //guardar datos en el usuario temporal y agrega el usuario a la lista
                     u.setNombre(tempUsuList[0]);
                     u.setNacimiento(tempUsuList[1]);
                     u.setUsuario(tempUsuList[2]);
@@ -83,8 +132,11 @@ void Principal::leerBDUsuarios(QString ruta){
             }
        }
     }
+    //cierra la base de datos
     bd.close();
 }
+
+//funcion que lee la base de datos de libros con la ruta igual que la anterior base de datos
 
 void Principal::leerBDLibros(QString ruta)
 {
@@ -121,42 +173,30 @@ void Principal::leerBDLibros(QString ruta)
 }
 
 //slots
+
 void Principal::regUsuShow(){
+    //abre la ventana de registrar usuario
     reg->show();
 }
 void Principal::iniUsuShow(){
+    //Abre la ventana de iniciar sesión
     ini->show();
 }
 
 void Principal::perfilShow(){
+    //abre la ventana de perfil
     perf->show();
+    //llama a la función de perfil para agregar la información a al ventana del usuario actual
     perf->agregarInfo(usuarios[getUsuarioActual()]);
-}
-
-QString Principal::getDirbdLibros() const
-{
-    return dirbdLibros;
-}
-
-void Principal::setDirbdLibros(const QString &value)
-{
-    dirbdLibros = value;
 }
 
 void Principal::cargarUsuShow()
 {
+    //abre ventana de cargar usuarios
     carUsu->show();
 }
 
-QString Principal::getDirbd() const
-{
-    return dirbd;
-}
-
-void Principal::setDirbd(const QString &value)
-{
-    dirbd = value;
-}
+//función para guardar la lista de usuarios pasada como argumento en la base de datos de usuarios
 
 void Principal::guardarBD(QList<Usuario> usu)
 {
@@ -166,11 +206,13 @@ void Principal::guardarBD(QList<Usuario> usu)
     if(!bd.exists()){
         qDebug() <<"El archivo no existe";
     }else{
+        //abre la base de datos como escritura, lo cual borra lo que hay en el archivo antes de escribir
         bd.open(QIODevice::WriteOnly | QIODevice::Text);
         if(!bd.isOpen()){
             qDebug() <<"El archivo no se pudo abrir";
         }else{
             QTextStream out(&bd);
+            //guarda cada usuario de la lista en una nueva linea en la base de datos
             foreach (Usuario u, usu) {
                 out << u.getNombre() << "|" << u.getNacimiento() << "|" << u.getUsuario() << "|" << u.getContrasena() << "|" << u.getCorreo() << "\n";
             }
@@ -178,18 +220,9 @@ void Principal::guardarBD(QList<Usuario> usu)
         bd.flush();
         bd.close();
     }
-
-}
-//funciones de señales
-int Principal::getUsuarioActual() const
-{
-    return usuarioActual;
 }
 
-void Principal::setUsuarioActual(int value)
-{
-    usuarioActual = value;
-}
+//función para registrar un nuevo usuario
 
 void Principal::registrarUsuario(QString nom, QString user, QString pass, QString nac, QString mail){
     int count = 0;
@@ -197,6 +230,7 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
     QMessageBox m;
     m.setStyleSheet("background-color:#333; color:white;");
     m.setWindowTitle("Advertencia");
+    //revisar que el usuario no este repetido
     while(it != usuarios.end()){
         if(it->getUsuario()==user){
             m.setText("El Usuario ya existe");
@@ -206,6 +240,7 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
         ++it;
         count++;
     }
+    //si el usuario no esta repetido lo guarda en la lista y lo agrega a la base de datos
     if(it == usuarios.end()){
         Usuario u;
         u.setNombre(nom);
@@ -239,18 +274,21 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
     }
 }
 
+//funcion para iniciar sesión
+
 void Principal::iniciarSesion(QString user, QString pass){
     QList<Usuario>::iterator it=usuarios.begin();
     QMessageBox m;
     m.setStyleSheet("background-color:#333; color:white;");
     m.setWindowTitle("Advertencia");
     int count = 0;
+    //buscar en los usuarios uno que sea el mismo y tenga la misma contraseña
     while(it != usuarios.end()){
         if(it->getUsuario()==user && it->getContrasena()==pass){
+            //si se lo encuentra abre la ventana prinicial y guarda el usuario actual
             w->show();
             ini->close();
             setUsuarioActual(count);
-            //leer bd libros
             break;
         }
         ++it;
@@ -261,6 +299,8 @@ void Principal::iniciarSesion(QString user, QString pass){
         m.exec();
     }
 }
+
+//función para cargar usuarios desde otro archivo
 
 void Principal::carUsuBase(QString ruta)
 {
@@ -291,14 +331,18 @@ void Principal::carUsuBase(QString ruta)
 
 }
 
+//función que recibe la señal de perfil al dar clic en guardar
+
 void Principal::guardarPerfil(QString usu)
 {
     QMessageBox m;
     m.setStyleSheet("background-color:#333; color:white;");
     m.setWindowTitle("MiLibreria");
+    //revisa si no esta repetido el usuario que quiere guardar
     if(!revisarRepetidoPerfil(usu)){
-        //si no esta repetido
+        //si no esta repetido llama a la funcion de guardar datos y le pasa la direccion de memoria del usuario para modificarlo
         perf->guardarCambios(&usuarios[getUsuarioActual()]);
+        //una vez modificado el usuario en la lista guarda la lista de usuarios en la base de datos
         guardarBD(usuarios);
         m.setText("Usuario Guardado Exitosamente");
         m.exec();
@@ -309,6 +353,8 @@ void Principal::guardarPerfil(QString usu)
         m.exec();
     }
 }
+
+//funcion que revisa si un usuario que no es el actual ya esta ocupado
 
 int Principal::revisarRepetidoPerfil(QString usu){
    //Ver si no esta repetido
@@ -325,12 +371,17 @@ int Principal::revisarRepetidoPerfil(QString usu){
     }
 }
 
+//función que busca un libro en la base de datos de libros
+
 void Principal::buscarLibrosSignal(QString li, int que)
 {
     int mostrar = 0;
+    //por cada libro en la lista de libros
     foreach(LibroData lib, libros){
         mostrar = 0;
+        //revisa si el codigo es 0 o si es el indicado
         if(!que || que == 1)
+            //revisa si el libro contiene las palabras buscadas
             if(lib.getTitulo().contains(li, Qt::CaseInsensitive)){
                 mostrar = 1;
             }
@@ -351,7 +402,9 @@ void Principal::buscarLibrosSignal(QString li, int que)
                 mostrar = 1;
             }
 
+        //si encuentra lo buscado en el libro
         if(mostrar){
+            //llama la función de mainwindow para agregar el libro a la lista
             w->dibujarLibros(&lib);
         }
     }

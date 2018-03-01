@@ -16,14 +16,14 @@ public:
     explicit Perfil(QWidget *parent = 0);
     ~Perfil();
 
-    void agregarInfo(Usuario usuAct);
-    void guardarCambios(Usuario *usu);
+    void agregarInfo(Usuario usuAct); //funcion que recibe los datos de un usuario y los agrega a las entradas de la ventana
+    void guardarCambios(Usuario *usu); //funcion que recibe una referencia de un usuario para guardar los nuevos datos del usuario en el
 
 private slots:
-    void on_guardarBotonPerfil_clicked();
+    void on_guardarBotonPerfil_clicked(); //boton de guardar datos
 
 signals:
-    void guardarPerfilSignal(QString usu);
+    void guardarPerfilSignal(QString usu);//señal enviada a principal con el nuevo user para revisar si esta disponible antes de llamar la funcion guardar cambios
 
 private:
     Ui::Perfil *ui;

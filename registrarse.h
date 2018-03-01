@@ -16,13 +16,13 @@ public:
     ~Registrarse();
 
 private slots:
-    void on_iniciarBotonNuevo_clicked();
+    void on_iniciarBotonNuevo_clicked();//boton regresar a iniciar
 
-    void on_registrarmeBotonNuevo_clicked();
+    void on_registrarmeBotonNuevo_clicked();//boton guardar registro
 
 signals:
-    void regUsu(QString nom, QString user, QString pass, QString nac, QString mail);
-    void regToIni();
+    void regUsu(QString nom, QString user, QString pass, QString nac, QString mail);//señal registrar usuario, se manda a principal
+    void regToIni();//señal que se manda a principal para abrir ventana de iniciar sesion
 
 private:
     Ui::Registrarse *ui;

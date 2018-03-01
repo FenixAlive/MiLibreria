@@ -16,20 +16,20 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void dibujarLibros(LibroData *lib);
+    void dibujarLibros(LibroData *lib); //función que agrega un widget libro a la lista de widgets
 
 private slots:
-    void on_actionSalir_triggered();
+    void on_actionSalir_triggered();    //sale del programa
 
-    void on_actionPerfil_triggered();
+    void on_actionPerfil_triggered(); //abre ventana de perfil
 
-    void on_actionCargar_Usuarios_triggered();
+    void on_actionCargar_Usuarios_triggered(); //abre ventana de CargarUsuarios
 
-    void on_actionAcerca_De_triggered();
+    void on_actionAcerca_De_triggered(); //abre QMessageBox indicando un acercaDe
 
-    void on_buscarInput_textChanged(const QString &arg1);
+    void on_buscarInput_textChanged(const QString &arg1); //función que se ejecuta al cambiar una letra del buscador de libros
 
-    void on_actionCargar_Libros_triggered();
+    // Categorias
 
     void on_actionAntolog_a_triggered();
 
@@ -52,9 +52,9 @@ private slots:
     void on_actionCl_sico_triggered();
 
 signals:
-    void botonPerfil();
-    void cargarUsuario();
-    void buscarLibrosInputSignal(QString lib, int que);
+    void botonPerfil(); //señal que se conecta en clase principal para abrir ventana de perfil
+    void cargarUsuario(); //señal para abrir ventana de cargar usuario desde principal
+    void buscarLibrosInputSignal(QString lib, int que); //señal para buscar libros en principal, recibe las letras a buscar y un codigo sobre que va a buscar
 
 private:
     Ui::MainWindow *ui;

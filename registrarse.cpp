@@ -16,11 +16,15 @@ Registrarse::~Registrarse()
     delete ui;
 }
 
+//al dar clic en iniciar sesion se emite señal para abrir la ventana iniciar desde principal
+
 void Registrarse::on_iniciarBotonNuevo_clicked()
 {
     this->close();
     emit regToIni();
 }
+
+//al dar clic en registrar revisa que los datos esten llenos correctamente y de ser asi emite la señal a principal donde revisa que no se repita y se guarda el nuevo usuario
 
 void Registrarse::on_registrarmeBotonNuevo_clicked()
 {

@@ -17,18 +17,18 @@ public:
     ~CargarUsuarios();
 
 private slots:
-    void on_botones_accepted();
+    void on_botones_accepted(); //boton de aceptar clic
 
-    void on_botones_rejected();
+    void on_botones_rejected(); //boton cancelar clic
 
-    void on_buscarTree_clicked(const QModelIndex &index);
+    void on_buscarTree_clicked(const QModelIndex &index); //clic en un elemento del arbol
 
 signals:
-    void carUsuRuta(QString ruta);
+    void carUsuRuta(QString ruta); //señal enviada a principal para leer los usuarios en la ruta especificda y guardarlos en la base de usuarios
 
 private:
     Ui::CargarUsuarios *ui;
-    QFileSystemModel *filemodel;
+    QFileSystemModel *filemodel; //objeto de la clase file para el arbol
 };
 
 #endif // CARGARUSUARIOS_H

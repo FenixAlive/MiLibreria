@@ -13,6 +13,7 @@ Libro::~Libro()
     delete ui;
 }
 
+//pone los datos que se le pasan de un libro en el widget
 void Libro::setDatos(LibroData *lib)
 {
     ui->titulo->setText(lib->getTitulo());

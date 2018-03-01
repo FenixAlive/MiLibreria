@@ -15,7 +15,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #333;
-color: white;</string>
+color: white;
+margin:1px;</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -108,7 +109,7 @@ background-color:#f1f1f1;</string>
      <x>0</x>
      <y>0</y>
      <width>813</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuInicio">
@@ -310,11 +311,6 @@ background-color:#f1f1f1;</string>
   <action name="actionAcerca_De">
    <property name="text">
     <string>Acerca De</string>
-   </property>
-  </action>
-  <action name="actionCargar_Libros">
-   <property name="text">
-    <string>Cargar Libros</string>
    </property>
   </action>
  </widget>
