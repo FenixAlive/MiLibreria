@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include "libro.h"
 #include "usuario.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -61,29 +62,38 @@ void MainWindow::dibujarLibros(LibroData *lib)
         //creando objeto del widget a agregar
         Libro *libroItem = new Libro;
         libroItem->setDatos(lib);
-
         //agregar el item
         ui->listLibrosWidget->setItemWidget(listWidgetItem, libroItem);
+        ui->listLibrosWidget->connect(libroItem, SIGNAL(upgradeLibro(LibroData)),
+                                      this, SLOT(upgradeLibro(LibroData)));
 }
 
 //función que corre al cambiar el texto en el buscador de libros
-
 void MainWindow::on_buscarInput_textChanged(const QString &arg1)
 {
     //limpia la lista de libros
-    ui->listLibrosWidget->clear();
-
-    //revisa si el texto no esta vacio
-    if(arg1 != ""){
-        //escribe en el label debajo del buscador un titulo
-        ui->resTitulo->setText("Resultados de la busqueda:");
-        // emite señal con la palabra a buscar y con la clave 0 que busca en todos los datos
-        emit buscarLibrosInputSignal(arg1, 0);
-    }else{
+    if(arg1 == ""){
+        ui->listLibrosWidget->clear();
         ui->resTitulo->setText("");
     }
 }
 
+void MainWindow::on_buscarInput_editingFinished()
+{
+
+    //declara variable con el valor del texto a buscar
+    QString arg1 = ui->buscarInput->text();
+
+    //revisa si el texto no esta vacio
+    if(arg1 != ""){
+        //limpia la lista de libros
+        ui->listLibrosWidget->clear();
+        //escribe en el label debajo del buscador un titulo
+        ui->resTitulo->setText("Resultados de la busqueda: "+arg1);
+        // emite señal con la palabra a buscar y con la clave 0 que busca en todos los datos y otro 0 indicando que busque en todos los libros
+        emit buscarLibrosInputSignal(arg1, 0, 0);
+    }
+}
 //al dar clic en las categorias se hace lo siguiente:
 //se limpia la lista de widgets
 //se pone el titulo de la categoria en el label debajo del buscador
@@ -91,70 +101,113 @@ void MainWindow::on_buscarInput_textChanged(const QString &arg1)
 
 void MainWindow::on_actionAntolog_a_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Antología:");
-    emit buscarLibrosInputSignal("Antología", 5);
+    emit buscarLibrosInputSignal("Antología", 5, 0);
 }
 
 void MainWindow::on_actionBiograf_a_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Biografía:");
-    emit buscarLibrosInputSignal("Biografía", 5);
+    emit buscarLibrosInputSignal("Biografía", 5, 0);
 }
 
 void MainWindow::on_actionDrama_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Drama:");
-    emit buscarLibrosInputSignal("Drama", 5);
+    emit buscarLibrosInputSignal("Drama", 5, 0);
 }
 
 void MainWindow::on_actionExpositivo_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Expositivo:");
-    emit buscarLibrosInputSignal("Expositivo", 5);
+    emit buscarLibrosInputSignal("Expositivo", 5, 0);
 }
 
 void MainWindow::on_actionEpistolar_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Epistolar:");
-    emit buscarLibrosInputSignal("Epistolar", 5);
+    emit buscarLibrosInputSignal("Epistolar", 5, 0);
 }
 
 void MainWindow::on_actionNarrativa_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Narrativa:");
-    emit buscarLibrosInputSignal("Narrativa", 5);
+    emit buscarLibrosInputSignal("Narrativa", 5, 0);
 }
 
 void MainWindow::on_actionObra_gr_fica_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Obra Gráfica:");
-    emit buscarLibrosInputSignal("Obra Gráfica", 5);
+    emit buscarLibrosInputSignal("Obra Gráfica", 5, 0);
 }
 
 void MainWindow::on_actionPoes_a_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Poesía");
-    emit buscarLibrosInputSignal("Poesía", 5);
+    emit buscarLibrosInputSignal("Poesía", 5, 0);
 }
 
 void MainWindow::on_actionReferencia_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Referencia:");
-    emit buscarLibrosInputSignal("Referencia", 5);
+    emit buscarLibrosInputSignal("Referencia", 5, 0);
 }
 
 void MainWindow::on_actionCl_sico_triggered()
 {
+    ui->buscarInput->setText("");
     ui->listLibrosWidget->clear();
     ui->resTitulo->setText("Clásico:");
-    emit buscarLibrosInputSignal("Clásico", 5);
+    emit buscarLibrosInputSignal("Clásico", 5, 0);
+}
+
+//dar clic en todos los libros busca el codigo 7 que son todos los libros y 0 que busca en la lista de todos los libros
+
+void MainWindow::on_actionTodos_triggered()
+{
+    ui->buscarInput->setText("");
+    ui->listLibrosWidget->clear();
+    ui->resTitulo->setText("Todos los Libros");
+    emit buscarLibrosInputSignal("", 7, 0);
+}
+
+//al dar clic en mis libros manda a llamar la funcion buscar libros, 7 para todos los libros y 0 que busca en la lista de mis libros
+
+void MainWindow::on_actionMis_Libros_triggered()
+{
+    ui->buscarInput->setText(""); // deja en blanco el buscador
+    ui->listLibrosWidget->clear(); //limpia el widget de libros
+    ui->resTitulo->setText("Mis Libros"); //pone texto en el label de titulo
+    emit buscarLibrosInputSignal("", 7, 1); //envia señal para buscar todos los libros en mis libros
+}
+
+void MainWindow::on_actionFavoritos_triggered()
+{
+    ui->buscarInput->setText(""); // deja en blanco el buscador
+    ui->listLibrosWidget->clear(); //limpia el widget de libros
+    ui->resTitulo->setText("Favoritos"); //pone texto en el label de titulo
+    emit buscarLibrosInputSignal("", 7, 2); //envia señal para buscar todos los libros en mis libros
+}
+
+void MainWindow::upgradeLibro(LibroData lib)
+{
+   emit guardarUpgradeLibro(lib);
 }

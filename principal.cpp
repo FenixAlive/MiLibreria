@@ -37,8 +37,8 @@ Principal::Principal(QObject *parent) : QObject(parent)
     QObject::connect(w, SIGNAL(cargarUsuario()),
                      this, SLOT(cargarUsuShow()));
 
-    QObject::connect(w, SIGNAL(buscarLibrosInputSignal(QString, int)),
-                     this, SLOT(buscarLibrosSignal(QString, int)));
+    QObject::connect(w, SIGNAL(buscarLibrosInputSignal(QString, int, int)),
+                     this, SLOT(buscarLibrosSignal(QString, int, int)));
 
     //clase perfil
     QObject::connect(perf, SIGNAL(guardarPerfilSignal(QString)),
@@ -47,6 +47,10 @@ Principal::Principal(QObject *parent) : QObject(parent)
     //clase cargarUsuario
     QObject::connect(carUsu, SIGNAL(carUsuRuta(QString)),
                      this, SLOT(carUsuBase(QString)));
+
+    //de clase Libro a MainWindow y de mainWindow a principal
+    QObject::connect(w, SIGNAL(guardarUpgradeLibro(LibroData)),
+                     this, SLOT(guardarUpgradeLibro(LibroData)));
 
 }
 
@@ -57,7 +61,7 @@ void Principal::comenzar(){
     leerBDUsuarios(getDirbd());
 
     //lee la base de datos de libros
-    leerBDLibros(getDirbdLibros()+"fenix.txt");
+    libros = leerBDLibros(getDirbdLibros()+"todos.txt");
 
     //abre la ventana de iniciar sesión
     ini->show();
@@ -138,12 +142,17 @@ void Principal::leerBDUsuarios(QString ruta){
 
 //funcion que lee la base de datos de libros con la ruta igual que la anterior base de datos
 
-void Principal::leerBDLibros(QString ruta)
+QList <LibroData> Principal::leerBDLibros(QString ruta)
 {
+    QList <LibroData> leerLib;
     QFile bd;
     bd.setFileName(ruta);
     if(!bd.exists()){
         qDebug() <<"El archivo no existe";
+        bd.open(QIODevice::WriteOnly | QIODevice::Text);
+        bd.close();
+        if(bd.exists())
+            qDebug() <<"Archivo creado en: "+ruta;
     }else{
         bd.open(QIODevice::ReadOnly | QIODevice::Text);
         if(!bd.isOpen()){
@@ -155,6 +164,7 @@ void Principal::leerBDLibros(QString ruta)
             //agregar la información a la lista
             QList <QString> tempLibroList;
             LibroData l;
+            int index = 0;
             foreach(QString t, tempList){
                 tempLibroList = t.split("|");
                 if(tempLibroList[0] != ""){
@@ -164,12 +174,36 @@ void Principal::leerBDLibros(QString ruta)
                     l.setAnio(tempLibroList[3]);
                     l.setEditorial(tempLibroList[2]);
                     l.setCategoria(tempLibroList[4]);
-                    libros.append(l);
+                    l.setIndex(index);
+                    l.setBoton(0);
+                    leerLib.append(l);
+                    index++;
                 }
             }
        }
     }
     bd.close();
+    return leerLib;
+}
+
+void Principal::agregarBDLibro(LibroData lib, QString ruta)
+{
+        //base de datos
+        QFile bd;
+        bd.setFileName(ruta);
+        if(!bd.exists()){
+            qDebug() <<"El archivo de agregarBDLibro no existe";
+        }else{
+            bd.open(QIODevice::Append | QIODevice::Text);
+            if(!bd.isOpen()){
+                qDebug() <<"El archivo de BDLibro no se pudo abrir";
+            }else{
+                QTextStream out(&bd);
+                out << lib.getTitulo() <<"|"<<lib.getAutor() <<"|"<<lib.getEditorial() <<"|"<<lib.getAnio() <<"|"<<lib.getCategoria()<<"\n";
+            }
+            bd.flush();
+            bd.close();
+        }
 }
 
 //slots
@@ -289,6 +323,8 @@ void Principal::iniciarSesion(QString user, QString pass){
             w->show();
             ini->close();
             setUsuarioActual(count);
+            //carga lista de libros a fav y mis libros
+            verRelacionLibros();
             break;
         }
         ++it;
@@ -371,11 +407,44 @@ int Principal::revisarRepetidoPerfil(QString usu){
     }
 }
 
+//función que revisa las relaciones entre las bases de datos
+
+void Principal::verRelacionLibros()
+{
+    QList <LibroData> librosMis = leerBDLibros(getDirbdLibros()+"mis/"+usuarios[getUsuarioActual()].getUsuario()+".txt");
+    QList <LibroData> librosFav = leerBDLibros(getDirbdLibros()+"fav/"+usuarios[getUsuarioActual()].getUsuario()+".txt");
+    int enc=0;
+    foreach(LibroData l, libros){
+        enc=0;
+        foreach(LibroData li, librosFav){
+            if(l.getTitulo() == li.getTitulo()){
+                l.setBoton(2);
+                enc=1;
+                break;
+            }
+        }
+        if(!enc){
+            foreach(LibroData lib, librosMis){
+                if(l.getTitulo() == lib.getTitulo()){
+                    l.setBoton(1);
+                    enc=1;
+                    break;
+                }
+            }
+        }
+        if(!enc){
+            l.setBoton(0);
+        }
+        libros[l.getIndex()] = l;
+    }
+}
+
 //función que busca un libro en la base de datos de libros
 
-void Principal::buscarLibrosSignal(QString li, int que)
+void Principal::buscarLibrosSignal(QString li, int que, int cual)
 {
     int mostrar = 0;
+
     //por cada libro en la lista de libros
     foreach(LibroData lib, libros){
         mostrar = 0;
@@ -401,11 +470,37 @@ void Principal::buscarLibrosSignal(QString li, int que)
             if(lib.getCategoria().contains(li, Qt::CaseInsensitive)){
                 mostrar = 1;
             }
-
+        //con 7 muestra todos los libros
+        if(que == 7)
+            mostrar = 1;
         //si encuentra lo buscado en el libro
+        if(cual > lib.getBoton()){
+            mostrar=0;
+        }
         if(mostrar){
             //llama la función de mainwindow para agregar el libro a la lista
             w->dibujarLibros(&lib);
         }
     }
+}
+
+//función que corre al dar clic en boton de un libro para agregarlo a mis libros o a favoritos
+
+void Principal::guardarUpgradeLibro(LibroData lib)
+{
+    libros[lib.getIndex()]=lib;
+    QString ruta;
+    int agregar = 0;
+    switch(lib.getBoton()){
+        case 1:
+            ruta = "mis/";
+            agregar =1;
+            break;
+        case 2:
+            agregar =1;
+            ruta = "fav/";
+            break;
+    }
+    if(agregar)
+        agregarBDLibro(lib, getDirbdLibros()+ruta+usuarios[getUsuarioActual()].getUsuario()+".txt");
 }

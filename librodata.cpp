@@ -57,3 +57,23 @@ void LibroData::setCategoria(const QString &value)
 {
     categoria = value;
 }
+
+int LibroData::getIndex() const
+{
+    return index;
+}
+
+void LibroData::setIndex(int value)
+{
+    index = value;
+}
+
+int LibroData::getBoton() const
+{
+    return boton;
+}
+
+void LibroData::setBoton(int value)
+{
+    boton = value;
+}

@@ -21,12 +21,15 @@ public:
     explicit Principal(QObject *parent = nullptr);
 
     void comenzar(); // función que corre al iniciar la aplicación
+
+    QList<LibroData> leerBDLibros(QString ruta); //funcion para leer una base de datos de libros
+    void agregarBDLibro(LibroData lib, QString ruta);
+
     void leerBDUsuarios(QString ruta); // función para leer la base de datos de los usuarios
-    void leerBDLibros(QString ruta); //funcion para leer la base de datos de libros
-
-
     void guardarBD(QList <Usuario> usu); //funcion para guardar una lista de usarios en su base de datos
     int revisarRepetidoPerfil(QString usu); //función que revisa que el nuevo usuario al modificar el perfil no se repita con otro
+
+    void verRelacionLibros();
 
     // getters and setters
     int getUsuarioActual() const;
@@ -48,11 +51,13 @@ private slots:
     void iniciarSesion(QString user, QString pass); //recibe la señal para iniciar sesión
     void carUsuBase(QString ruta); // recibe señal  para cargar la base de datos de usuarios
     void guardarPerfil(QString usu); //recibe señal para guardar el nuevo perfil del usuario
-    void buscarLibrosSignal(QString li, int que); //recibe señal para buscar libros
+    void buscarLibrosSignal(QString li, int que, int cual); //recibe señal para buscar libros
+    void guardarUpgradeLibro(LibroData lib);
     void cargarUsuShow(); //recibe señal para mostrar ventana cargarUsuarios
     void regUsuShow(); //recibe señal para abrir ventana de registrar usuario
     void iniUsuShow(); //recibe señal para abrir ventana de iniciar sesion
     void perfilShow(); //recibe señal para abrir ventana de cambiar perfil
+    //poner función para editar listas al dar clic en boton de libros
 
 private:
     Iniciar *ini; //crea un objeto de la ventana iniciar sesión
@@ -61,7 +66,7 @@ private:
     Perfil *perf; //crea objeto de la ventana  y clase perfil
     CargarUsuarios *carUsu; //crea objeto de la clase cargarUsuarios
     QList <Usuario> usuarios; //crea una lista de usuarios donde se guardaran mas tarde
-    QList <LibroData> libros; //crea una lista de libros vacia
+    QList <LibroData> libros; //crea una lista de libros vacia para todos los libros
     int usuarioActual; //crea una variable para guardar el usuario actual
     QString dirbd; //crea una variable con la direccion de la base de datos actual de usuarios
     QString dirbdLibros; //crea una variable con la direccion de la base de datos de libros

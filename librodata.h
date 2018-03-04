@@ -24,12 +24,20 @@ public:
     QString getCategoria() const;
     void setCategoria(const QString &value);
 
+    int getIndex() const;
+    void setIndex(int value);
+
+    int getBoton() const;
+    void setBoton(int value);
+
 private: //variables que guardará un libro
     QString titulo;
     QString autor;
     QString anio;
     QString editorial;
     QString categoria;
+    int index;
+    int boton;
 
 };
 

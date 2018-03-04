@@ -30,7 +30,6 @@ private: //variables que guarda un usuario
     QString contrasena;
     QString nacimiento;
     QString correo;
-
 };
 
 #endif // USUARIO_H

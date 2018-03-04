@@ -17,9 +17,20 @@ public:
     void setDatos(LibroData *lib); //función para agregar los datos de un libro al widget
     ~Libro();
 
+    //reglas para boton
+    void dibujarBoton(int codigo);
+
+
+private slots:
+    void on_boton_clicked();
+
+signals:
+    void upgradeLibro(LibroData lib);
 
 private:
     Ui::Libro *ui;
+    int status;
+    LibroData tempLib;
 
 };
 
