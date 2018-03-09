@@ -51,6 +51,5 @@ void Libro::on_boton_clicked()
     status++;
     tempLib.setBoton(status);
     dibujarBoton(status);
-    //ver como pasarle el dato al libro original o cambiar como se llama este libro ya que no puedo modificarlo desde principal porque no tengo un objeto.
     emit upgradeLibro(tempLib);
 }

@@ -192,11 +192,11 @@ void Principal::agregarBDLibro(LibroData lib, QString ruta)
         QFile bd;
         bd.setFileName(ruta);
         if(!bd.exists()){
-            qDebug() <<"El archivo de agregarBDLibro no existe";
+            qDebug() <<"El archivo de agregarBDLibro no existe en la ruta: "+ruta;
         }else{
             bd.open(QIODevice::Append | QIODevice::Text);
             if(!bd.isOpen()){
-                qDebug() <<"El archivo de BDLibro no se pudo abrir";
+                qDebug() <<"El archivo de BDLibro no se pudo abrir en la ruta: "+ruta;
             }else{
                 QTextStream out(&bd);
                 out << lib.getTitulo() <<"|"<<lib.getAutor() <<"|"<<lib.getEditorial() <<"|"<<lib.getAnio() <<"|"<<lib.getCategoria()<<"\n";
@@ -411,8 +411,8 @@ int Principal::revisarRepetidoPerfil(QString usu){
 
 void Principal::verRelacionLibros()
 {
-    QList <LibroData> librosMis = leerBDLibros(getDirbdLibros()+"mis/"+usuarios[getUsuarioActual()].getUsuario()+".txt");
-    QList <LibroData> librosFav = leerBDLibros(getDirbdLibros()+"fav/"+usuarios[getUsuarioActual()].getUsuario()+".txt");
+    QList <LibroData> librosMis = leerBDLibros(getDirbdLibros()+"mis/"+usuarios[getUsuarioActual()].getUsuario()+"_bks.txt");
+    QList <LibroData> librosFav = leerBDLibros(getDirbdLibros()+"fav/"+usuarios[getUsuarioActual()].getUsuario()+"_fv.txt");
     int enc=0;
     foreach(LibroData l, libros){
         enc=0;
@@ -493,14 +493,14 @@ void Principal::guardarUpgradeLibro(LibroData lib)
     int agregar = 0;
     switch(lib.getBoton()){
         case 1:
-            ruta = "mis/";
+            ruta = getDirbdLibros()+"mis/"+usuarios[getUsuarioActual()].getUsuario()+"_bks.txt";
             agregar =1;
             break;
         case 2:
             agregar =1;
-            ruta = "fav/";
+            ruta = getDirbdLibros()+"fav/"+usuarios[getUsuarioActual()].getUsuario()+"_fv.txt";
             break;
     }
     if(agregar)
-        agregarBDLibro(lib, getDirbdLibros()+ruta+usuarios[getUsuarioActual()].getUsuario()+".txt");
+        agregarBDLibro(lib, ruta);
 }
