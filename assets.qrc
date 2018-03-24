@@ -9,5 +9,10 @@
         <file>img/mislibros.png</file>
         <file>img/todoslibros.png</file>
         <file>img/buscar.png</file>
+        <file>img/autor.jpg</file>
+        <file>img/categoria.jpg</file>
+        <file>img/editorial.jpg</file>
+        <file>img/year.jpg</file>
+        <file>img/titulo.jpg</file>
     </qresource>
 </RCC>
