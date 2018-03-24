@@ -29,7 +29,14 @@ public:
     void guardarBD(QList <Usuario> usu); //funcion para guardar una lista de usarios en su base de datos
     int revisarRepetidoPerfil(QString usu); //función que revisa que el nuevo usuario al modificar el perfil no se repita con otro
 
-    void verRelacionLibros();
+    void verRelacionLibros(); //le pone valor a la variable boton del la lista libros
+
+    //Funciones de comparacion para el sort
+    static bool compararTitulo(const LibroData& i, const LibroData& j);
+    static bool compararAutor(const LibroData& i, const LibroData& j);
+    static bool compararAnio(const LibroData& i, const LibroData& j);
+    static bool compararEditorial(const LibroData& i, const LibroData& j);
+    static bool compararCategoria(const LibroData& i, const LibroData& j);
 
     // getters and setters
     int getUsuarioActual() const;
@@ -52,7 +59,8 @@ private slots:
     void carUsuBase(QString ruta); // recibe señal  para cargar la base de datos de usuarios
     void guardarPerfil(QString usu); //recibe señal para guardar el nuevo perfil del usuario
     void buscarLibrosSignal(QString li, int que, int cual); //recibe señal para buscar libros
-    void guardarUpgradeLibro(LibroData lib);
+    void guardarUpgradeLibro(LibroData lib); //recibe señal para actualizar mis libros y favoritos
+    void ordenarLibros(int como); //recibe señal para ordenar los libros (1:Titulo, 2:Autor, 3:Anio, 4:Editorial, 5:Categoria)
     void cargarUsuShow(); //recibe señal para mostrar ventana cargarUsuarios
     void regUsuShow(); //recibe señal para abrir ventana de registrar usuario
     void iniUsuShow(); //recibe señal para abrir ventana de iniciar sesion

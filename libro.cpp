@@ -24,7 +24,7 @@ void Libro::dibujarBoton(int codigo)
             break;
         case 1:
             ui->boton->setText("Favoritos");
-            ui->boton->setStyleSheet("color:#737373; background-color:#f7f935;");
+            ui->boton->setStyleSheet("color:#313131; background-color:#f7f713;");
             break;
         case 2:
             ui->boton->hide();

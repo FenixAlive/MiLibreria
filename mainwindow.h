@@ -62,11 +62,23 @@ private slots:
 
     void upgradeLibro(LibroData lib);
 
+
+    void on_actionOrderTitulo_triggered();
+
+    void on_actionOrderAutor_triggered();
+
+    void on_actionOrderAnio_triggered();
+
+    void on_actionOrderEditorial_triggered();
+
+    void on_actionOrderCategoria_triggered();
+
 signals:
     void botonPerfil(); //señal que se conecta en clase principal para abrir ventana de perfil
     void cargarUsuario(); //señal para abrir ventana de cargar usuario desde principal
     void buscarLibrosInputSignal(QString lib, int que, int cual); //señal para buscar libros en principal, recibe las letras a buscar y un codigo sobre que va a buscar
-    void guardarUpgradeLibro(LibroData lib);
+    void guardarUpgradeLibro(LibroData lib); //señal para actualizar el boton de agregar a mis libros o favoritos
+    void ordenarLibros(int como); //señal para ordenar los libros en cierto orden (1:Titulo, 2:Autor, 3:Anio, 4:Editorial, 5:Categoria)
 
 private:
     Ui::MainWindow *ui;

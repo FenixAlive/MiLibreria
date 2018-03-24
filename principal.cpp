@@ -40,6 +40,9 @@ Principal::Principal(QObject *parent) : QObject(parent)
     QObject::connect(w, SIGNAL(buscarLibrosInputSignal(QString, int, int)),
                      this, SLOT(buscarLibrosSignal(QString, int, int)));
 
+    QObject::connect(w, SIGNAL(ordenarLibros(int)),
+                     this, SLOT(ordenarLibros(int)));
+
     //clase perfil
     QObject::connect(perf, SIGNAL(guardarPerfilSignal(QString)),
                      this, SLOT(guardarPerfil(QString)));
@@ -51,6 +54,8 @@ Principal::Principal(QObject *parent) : QObject(parent)
     //de clase Libro a MainWindow y de mainWindow a principal
     QObject::connect(w, SIGNAL(guardarUpgradeLibro(LibroData)),
                      this, SLOT(guardarUpgradeLibro(LibroData)));
+
+
 
 }
 
@@ -199,7 +204,7 @@ void Principal::agregarBDLibro(LibroData lib, QString ruta)
                 qDebug() <<"El archivo de BDLibro no se pudo abrir en la ruta: "+ruta;
             }else{
                 QTextStream out(&bd);
-                out << lib.getTitulo() <<"|"<<lib.getAutor() <<"|"<<lib.getEditorial() <<"|"<<lib.getAnio() <<"|"<<lib.getCategoria()<<"\n";
+                out <<"\n"<< lib.getTitulo() <<"|"<<lib.getAutor() <<"|"<<lib.getEditorial() <<"|"<<lib.getAnio() <<"|"<<lib.getCategoria();
             }
             bd.flush();
             bd.close();
@@ -304,7 +309,7 @@ void Principal::registrarUsuario(QString nom, QString user, QString pass, QStrin
         m.exec();
         setUsuarioActual(count);
         reg->close();
-        w->show();
+        ini->show();
     }
 }
 
@@ -439,6 +444,7 @@ void Principal::verRelacionLibros()
     }
 }
 
+
 //función que busca un libro en la base de datos de libros
 
 void Principal::buscarLibrosSignal(QString li, int que, int cual)
@@ -503,4 +509,68 @@ void Principal::guardarUpgradeLibro(LibroData lib)
     }
     if(agregar)
         agregarBDLibro(lib, ruta);
+}
+
+//funcion para ordenar los libros
+void Principal::ordenarLibros(int como)
+{
+      switch(como){
+         case 1:
+            //función de ordenamiento, recibe donde comienza, donde termina y una función personalizada para comparar y ordenar
+            std::sort(libros.begin(), libros.end(), compararTitulo);
+            break;
+         case 2:
+            std::sort(libros.begin(), libros.end(), compararAutor);
+            break;
+         case 3:
+            std::sort(libros.begin(), libros.end(), compararAnio);
+            break;
+         case 4:
+            std::sort(libros.begin(), libros.end(), compararEditorial);
+            break;
+         case 5:
+            std::sort(libros.begin(), libros.end(), compararCategoria);
+            break;
+      }
+      //reacomodar la variable index de los libros despues de ordenarlos.
+      int i=0;
+      LibroData libTemp;
+      foreach (LibroData l, libros) {
+          libTemp.setTitulo(l.getTitulo());
+          libTemp.setAutor(l.getAutor());
+          libTemp.setAnio(l.getAnio());
+          libTemp.setEditorial(l.getEditorial());
+          libTemp.setCategoria(l.getCategoria());
+          libTemp.setBoton(l.getBoton());
+          libTemp.setIndex(i);
+          libros[i]=libTemp;
+          i++;
+      }
+}
+
+//funciones personalizadas utilizadas para ordenar los libros
+
+bool Principal::compararTitulo(const LibroData& i, const LibroData& j)
+{
+        return i.getTitulo() < j.getTitulo();
+}
+
+bool Principal::compararAutor(const LibroData &i, const LibroData &j)
+{
+        return i.getAutor() < j.getAutor();
+}
+
+bool Principal::compararAnio(const LibroData &i, const LibroData &j)
+{
+        return i.getAnio() < j.getAnio();
+}
+
+bool Principal::compararEditorial(const LibroData &i, const LibroData &j)
+{
+        return i.getEditorial() < j.getEditorial();
+}
+
+bool Principal::compararCategoria(const LibroData &i, const LibroData &j)
+{
+        return i.getCategoria() < j.getCategoria();
 }

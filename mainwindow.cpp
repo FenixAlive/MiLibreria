@@ -64,6 +64,7 @@ void MainWindow::dibujarLibros(LibroData *lib)
         libroItem->setDatos(lib);
         //agregar el item
         ui->listLibrosWidget->setItemWidget(listWidgetItem, libroItem);
+        //señal para agregar a mis libros y a favoritos
         ui->listLibrosWidget->connect(libroItem, SIGNAL(upgradeLibro(LibroData)),
                                       this, SLOT(upgradeLibro(LibroData)));
 }
@@ -189,7 +190,7 @@ void MainWindow::on_actionTodos_triggered()
     emit buscarLibrosInputSignal("", 7, 0);
 }
 
-//al dar clic en mis libros manda a llamar la funcion buscar libros, 7 para todos los libros y 0 que busca en la lista de mis libros
+//al dar clic en mis libros manda a llamar la funcion buscar libros, 7 para todos los libros y 1 que busca en la lista de mis libros
 
 void MainWindow::on_actionMis_Libros_triggered()
 {
@@ -204,10 +205,92 @@ void MainWindow::on_actionFavoritos_triggered()
     ui->buscarInput->setText(""); // deja en blanco el buscador
     ui->listLibrosWidget->clear(); //limpia el widget de libros
     ui->resTitulo->setText("Favoritos"); //pone texto en el label de titulo
-    emit buscarLibrosInputSignal("", 7, 2); //envia señal para buscar todos los libros en mis libros
+    emit buscarLibrosInputSignal("", 7, 2); //envia señal para buscar todos los libros en Favoritos
 }
+
+//Slot que emite una señal a principal para guardar la señal del boton del widget
 
 void MainWindow::upgradeLibro(LibroData lib)
 {
    emit guardarUpgradeLibro(lib);
+}
+
+void MainWindow::on_actionOrderTitulo_triggered()
+{
+    //ver si no estaba checkeado antes
+    if(ui->actionOrderTitulo->isChecked()){
+        //quitar el check a las otras categorias
+        ui->actionOrderAutor->setChecked(false);
+        ui->actionOrderAnio->setChecked(false);
+        ui->actionOrderEditorial->setChecked(false);
+        ui->actionOrderCategoria->setChecked(false);
+        //emitir señal de ordenamiento
+        emit ordenarLibros(1);
+    }else{
+        ui->actionOrderTitulo->setChecked(true);
+    }
+}
+
+void MainWindow::on_actionOrderAutor_triggered()
+{
+    //ver si no estaba checkeado antes
+    if(ui->actionOrderAutor->isChecked()){
+        //quitar el check a las otras categorias
+        ui->actionOrderTitulo->setChecked(false);
+        ui->actionOrderAnio->setChecked(false);
+        ui->actionOrderEditorial->setChecked(false);
+        ui->actionOrderCategoria->setChecked(false);
+        //emitir señal de ordenamiento
+        emit ordenarLibros(2);
+    }else{
+        ui->actionOrderAutor->setChecked(true);
+    }
+}
+
+void MainWindow::on_actionOrderAnio_triggered()
+{
+    //ver si no estaba checkeado antes
+    if(ui->actionOrderAnio->isChecked()){
+        //quitar el check a las otras categorias
+        ui->actionOrderTitulo->setChecked(false);
+        ui->actionOrderAutor->setChecked(false);
+        ui->actionOrderEditorial->setChecked(false);
+        ui->actionOrderCategoria->setChecked(false);
+        //emitir señal de ordenamiento
+        emit ordenarLibros(3);
+    }else{
+        ui->actionOrderAnio->setChecked(true);
+    }
+}
+
+void MainWindow::on_actionOrderEditorial_triggered()
+{
+    //ver si no estaba checkeado antes
+    if(ui->actionOrderEditorial->isChecked()){
+        //quitar el check a las otras categorias
+        ui->actionOrderTitulo->setChecked(false);
+        ui->actionOrderAutor->setChecked(false);
+        ui->actionOrderAnio->setChecked(false);
+        ui->actionOrderCategoria->setChecked(false);
+        //emitir señal de ordenamiento
+        emit ordenarLibros(4);
+    }else{
+        ui->actionOrderEditorial->setChecked(true);
+    }
+}
+
+void MainWindow::on_actionOrderCategoria_triggered()
+{
+    //ver si no estaba checkeado antes
+    if(ui->actionOrderCategoria->isChecked()){
+        //quitar el check a las otras categorias
+        ui->actionOrderTitulo->setChecked(false);
+        ui->actionOrderAutor->setChecked(false);
+        ui->actionOrderAnio->setChecked(false);
+        ui->actionOrderEditorial->setChecked(false);
+        //emitir señal de ordenamiento
+        emit ordenarLibros(5);
+    }else{
+        ui->actionOrderCategoria->setChecked(true);
+    }
 }

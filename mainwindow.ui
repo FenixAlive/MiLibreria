@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>813</width>
-    <height>365</height>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -147,8 +147,19 @@ background-color:#f1f1f1;</string>
     <addaction name="separator"/>
     <addaction name="actionAcerca_De"/>
    </widget>
+   <widget class="QMenu" name="menuOrdenar">
+    <property name="title">
+     <string>Ordenar</string>
+    </property>
+    <addaction name="actionOrderTitulo"/>
+    <addaction name="actionOrderAutor"/>
+    <addaction name="actionOrderAnio"/>
+    <addaction name="actionOrderEditorial"/>
+    <addaction name="actionOrderCategoria"/>
+   </widget>
    <addaction name="menuInicio"/>
    <addaction name="menuCategorias"/>
+   <addaction name="menuOrdenar"/>
    <addaction name="menuConfiguraci_n"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -163,6 +174,7 @@ background-color:#f1f1f1;</string>
    <addaction name="actionFavoritos"/>
    <addaction name="actionPerfil"/>
    <addaction name="actionSalir"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionFavoritos">
@@ -326,6 +338,46 @@ background-color:#f1f1f1;</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
+   </property>
+  </action>
+  <action name="actionOrderTitulo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Titulo</string>
+   </property>
+  </action>
+  <action name="actionOrderAutor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Autor</string>
+   </property>
+  </action>
+  <action name="actionOrderAnio">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Año</string>
+   </property>
+  </action>
+  <action name="actionOrderEditorial">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Editorial</string>
+   </property>
+  </action>
+  <action name="actionOrderCategoria">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Categoria</string>
    </property>
   </action>
  </widget>
