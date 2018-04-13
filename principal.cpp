@@ -449,6 +449,9 @@ void Principal::verRelacionLibros()
 
 void Principal::buscarLibrosSignal(QString li, int que, int cual)
 {
+    liBuscar = li;
+    queBuscar = que;
+    cualBuscar = cual;
     int mostrar = 0;
 
     //por cada libro en la lista de libros
@@ -514,24 +517,8 @@ void Principal::guardarUpgradeLibro(LibroData lib)
 //funcion para ordenar los libros
 void Principal::ordenarLibros(int como)
 {
-      switch(como){
-         case 1:
-            //función de ordenamiento, recibe donde comienza, donde termina y una función personalizada para comparar y ordenar
-            std::sort(libros.begin(), libros.end(), compararTitulo);
-            break;
-         case 2:
-            std::sort(libros.begin(), libros.end(), compararAutor);
-            break;
-         case 3:
-            std::sort(libros.begin(), libros.end(), compararAnio);
-            break;
-         case 4:
-            std::sort(libros.begin(), libros.end(), compararEditorial);
-            break;
-         case 5:
-            std::sort(libros.begin(), libros.end(), compararCategoria);
-            break;
-      }
+      //mergesort
+      mergeSort(libros, como);
       //reacomodar la variable index de los libros despues de ordenarlos.
       int i=0;
       LibroData libTemp;
@@ -546,31 +533,97 @@ void Principal::ordenarLibros(int como)
           libros[i]=libTemp;
           i++;
       }
+      //reimprimir lista ahora ordenada
+      buscarLibrosSignal(liBuscar, queBuscar, cualBuscar);
 }
 
-//funciones personalizadas utilizadas para ordenar los libros
-
-bool Principal::compararTitulo(const LibroData& i, const LibroData& j)
+void Principal::mergeSort(QList<LibroData> &A, int como)
 {
-        return i.getTitulo() < j.getTitulo();
+    if(A.size() > 1){
+        QList<LibroData>::iterator it = A.begin();
+        unsigned int p = A.size() / 2;
+        QList<LibroData> B;
+        QList<LibroData> C;
+        for (unsigned int i=0; i< p; ++i, ++it){
+            B.push_back(*it);//valor en el iterador
+        }
+        for(unsigned int i = p; i<(unsigned int)A.size(); ++i, ++it){
+            C.push_back(*it);
+        }
+        mergeSort(B, como);
+        mergeSort(C, como);
+        merge(B, C, A, como);
+    }
 }
 
-bool Principal::compararAutor(const LibroData &i, const LibroData &j)
+void Principal::merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &A, int como)
 {
-        return i.getAutor() < j.getAutor();
-}
+    A.clear(); //limpiar lista
+    QList<LibroData>::iterator itB = B.begin();
+    QList<LibroData>::iterator itC = C.begin();
 
-bool Principal::compararAnio(const LibroData &i, const LibroData &j)
-{
-        return i.getAnio() < j.getAnio();
-}
+    while(itB != B.end() && itC != C.end()){
+        LibroData b = *itB;
+        LibroData c = *itC;
+        switch(como){
+            case 1:
+            //función de ordenamiento, recibe donde comienza, donde termina y una función personalizada para comparar y ordenar
+            if(b.getTitulo() <= c.getTitulo()){
+                A.push_back(*itB);
+                ++itB;
+            }else{
+                A.push_back(*itC);
+                ++itC;
+            }
+            break;
+         case 2:
+            if(b.getAutor() <= c.getAutor()){
+                A.push_back(*itB);
+                ++itB;
+            }else{
+                A.push_back(*itC);
+                ++itC;
+            }
+            break;
+         case 3:
+            if(b.getAnio() <= c.getAnio()){
+                A.push_back(*itB);
+                ++itB;
+            }else{
+                A.push_back(*itC);
+                ++itC;
+            }
+            break;
+         case 4:
+            if(b.getEditorial() <= c.getEditorial()){
+                A.push_back(*itB);
+                ++itB;
+            }else{
+                A.push_back(*itC);
+                ++itC;
+            }
+            break;
+         case 5:
+            if(b.getCategoria() <= c.getCategoria()){
+                A.push_back(*itB);
+                ++itB;
+            }else{
+                A.push_back(*itC);
+                ++itC;
+            }
+            break;
+      }
 
-bool Principal::compararEditorial(const LibroData &i, const LibroData &j)
-{
-        return i.getEditorial() < j.getEditorial();
-}
-
-bool Principal::compararCategoria(const LibroData &i, const LibroData &j)
-{
-        return i.getCategoria() < j.getCategoria();
+    }
+    if( itB == B.end()){
+        while(itC != C.end()){
+            A.push_back(*itC);
+            ++itC;
+        }
+    }else{
+        while(itB != B.end()){
+            A.push_back(*itB);
+            ++itB;
+        }
+    }
 }

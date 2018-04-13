@@ -224,6 +224,7 @@ void MainWindow::on_actionOrderTitulo_triggered()
         ui->actionOrderAnio->setChecked(false);
         ui->actionOrderEditorial->setChecked(false);
         ui->actionOrderCategoria->setChecked(false);
+        ui->listLibrosWidget->clear(); //limpia el widget de libros
         //emitir señal de ordenamiento
         emit ordenarLibros(1);
     }else{
@@ -240,6 +241,7 @@ void MainWindow::on_actionOrderAutor_triggered()
         ui->actionOrderAnio->setChecked(false);
         ui->actionOrderEditorial->setChecked(false);
         ui->actionOrderCategoria->setChecked(false);
+        ui->listLibrosWidget->clear(); //limpia el widget de libros
         //emitir señal de ordenamiento
         emit ordenarLibros(2);
     }else{
@@ -256,6 +258,7 @@ void MainWindow::on_actionOrderAnio_triggered()
         ui->actionOrderAutor->setChecked(false);
         ui->actionOrderEditorial->setChecked(false);
         ui->actionOrderCategoria->setChecked(false);
+        ui->listLibrosWidget->clear(); //limpia el widget de libros
         //emitir señal de ordenamiento
         emit ordenarLibros(3);
     }else{
@@ -272,6 +275,7 @@ void MainWindow::on_actionOrderEditorial_triggered()
         ui->actionOrderAutor->setChecked(false);
         ui->actionOrderAnio->setChecked(false);
         ui->actionOrderCategoria->setChecked(false);
+        ui->listLibrosWidget->clear(); //limpia el widget de libros
         //emitir señal de ordenamiento
         emit ordenarLibros(4);
     }else{
@@ -288,6 +292,7 @@ void MainWindow::on_actionOrderCategoria_triggered()
         ui->actionOrderAutor->setChecked(false);
         ui->actionOrderAnio->setChecked(false);
         ui->actionOrderEditorial->setChecked(false);
+        ui->listLibrosWidget->clear(); //limpia el widget de libros
         //emitir señal de ordenamiento
         emit ordenarLibros(5);
     }else{

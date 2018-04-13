@@ -371,7 +371,6 @@ background-color:#f1f1f1;</string>
    <addaction name="actionTodos"/>
    <addaction name="actionMis_Libros"/>
    <addaction name="actionFavoritos"/>
-   <addaction name="actionPerfil"/>
    <addaction name="separator"/>
    <addaction name="actionOrderTitulo"/>
    <addaction name="actionOrderAutor"/>
@@ -379,6 +378,7 @@ background-color:#f1f1f1;</string>
    <addaction name="actionOrderEditorial"/>
    <addaction name="actionOrderCategoria"/>
    <addaction name="separator"/>
+   <addaction name="actionPerfil"/>
    <addaction name="actionSalir"/>
    <addaction name="separator"/>
   </widget>

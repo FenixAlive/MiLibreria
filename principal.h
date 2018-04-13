@@ -31,12 +31,9 @@ public:
 
     void verRelacionLibros(); //le pone valor a la variable boton del la lista libros
 
-    //Funciones de comparacion para el sort
-    static bool compararTitulo(const LibroData& i, const LibroData& j);
-    static bool compararAutor(const LibroData& i, const LibroData& j);
-    static bool compararAnio(const LibroData& i, const LibroData& j);
-    static bool compararEditorial(const LibroData& i, const LibroData& j);
-    static bool compararCategoria(const LibroData& i, const LibroData& j);
+    //funciones mergeSort para ordenar los libros
+    void mergeSort(QList<LibroData> &A, int como);
+    void merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &A, int como);
 
     // getters and setters
     int getUsuarioActual() const;
@@ -78,6 +75,11 @@ private:
     int usuarioActual; //crea una variable para guardar el usuario actual
     QString dirbd; //crea una variable con la direccion de la base de datos actual de usuarios
     QString dirbdLibros; //crea una variable con la direccion de la base de datos de libros
+
+    //variables para guardar la ultima busqueda
+    QString liBuscar;
+    int queBuscar;
+    int cualBuscar;
 };
 
 #endif // PRINCIPAL_H
