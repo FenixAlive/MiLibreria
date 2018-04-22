@@ -1,7 +1,7 @@
 angel|12/09/1988|luis|1234|mail.com
 luis angel|27/09/1999|fenix|1234|luis.com
 alan|01/01/1999|alan|1234|correo
-adrian|09/09/1996|adrian|adri23|correo2
+adrian|09/09/1996|adrian|1234|correo2
 ana lia|07/09/1989|analia|1234|correo3
 ANGEL DURAN|13/12/1967|ANDU073|2146|ANGEL.DURAN@BKN.com
 DIANA ROBLES|3/10/1997|DIRO055|5325|DIANA.ROBLES@BKN.com

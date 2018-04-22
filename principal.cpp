@@ -62,11 +62,16 @@ Principal::Principal(QObject *parent) : QObject(parent)
 //función que corre al iniciar aplicación
 
 void Principal::comenzar(){
+
+
     //lee la base de datos de usuarios
     leerBDUsuarios(getDirbd());
 
     //lee la base de datos de libros
     libros = leerBDLibros(getDirbdLibros()+"todos.txt");
+
+    //hacer grafo para recomendados
+    hacerGrafo();
 
     //abre la ventana de iniciar sesión
     ini->show();
@@ -625,5 +630,119 @@ void Principal::merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &
             A.push_back(*itB);
             ++itB;
         }
+    }
+}
+
+void Principal::hacerGrafo()
+{
+    QHash<QString, int> aristas;
+    //QList <LibroData> librosFav = leerBDLibros(getDirbdLibros()+"fav/"+usuarios[getUsuarioActual()].getUsuario()+"_fv.txt");
+    QFile bd;
+    QString temp;
+    QList <QString> tempList;
+    QList <QString> tempLibroKey;
+    QList <QString> tempLibroAristas;
+    //iterar usuarios para leer sus libros y favoritos
+    foreach(Usuario u, usuarios){
+        //leer el archivo mis libros
+        bd.setFileName(getDirbdLibros()+"mis/"+u.getUsuario()+"_bks.txt");
+        if(!bd.exists()){
+            qDebug() <<"El archivo no existe, mis: "+u.getUsuario();
+            bd.open(QIODevice::WriteOnly | QIODevice::Text);
+            bd.close();
+        }else{
+            bd.open(QIODevice::ReadOnly | QIODevice::Text);
+            if(!bd.isOpen()){
+                qDebug() <<"El archivo no se pudo abrir";
+            }else{
+                temp = bd.readAll();
+                tempList.clear();
+                tempList = temp.split("\n");
+                //agregar la información a la lista
+                //llave del grafo
+                foreach(QString t, tempList){
+                    //borrar aristas previas
+                    aristas.clear();
+                    tempLibroKey.clear();
+                    tempLibroKey = t.split("|");
+                    if(tempLibroKey[0] != ""){
+                        if(!grafo.contains(tempLibroKey[0])){
+                            grafo.insert(tempLibroKey[0], aristas);
+                        }
+                        //llave de aristas
+                        foreach(QString subLibro, tempList){
+                            tempLibroAristas.clear();
+                            tempLibroAristas = subLibro.split("|");
+                            if(tempLibroKey[0] != tempLibroAristas[0] && tempLibroAristas[0] != ""){
+                                //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
+                                if(grafo[tempLibroKey[0]].contains(tempLibroAristas[0])){
+                                    grafo[tempLibroKey[0]][tempLibroAristas[0]]++;
+                                }else{
+                                    grafo[tempLibroKey[0]].insert(tempLibroAristas[0], 1);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        bd.close();
+        //leer archivo favoritos
+        bd.setFileName(getDirbdLibros()+"fav/"+u.getUsuario()+"_fv.txt");
+        if(!bd.exists()){
+            qDebug() <<"El archivo no existe, fav: "+u.getUsuario();
+            bd.open(QIODevice::WriteOnly | QIODevice::Text);
+            bd.close();
+        }else{
+            bd.open(QIODevice::ReadOnly | QIODevice::Text);
+            if(!bd.isOpen()){
+                qDebug() <<"El archivo no se pudo abrir";
+            }else{
+                temp = bd.readAll();
+                tempList.clear();
+                tempList = temp.split("\n");
+                //agregar la información a la lista
+                //llave del grafo
+                foreach(QString t, tempList){
+                    //borrar aristas previas
+                    aristas.clear();
+                    tempLibroKey.clear();
+                    tempLibroKey = t.split("|");
+                    if(tempLibroKey[0] != ""){
+                        if(!grafo.contains(tempLibroKey[0])){
+                            grafo.insert(tempLibroKey[0], aristas);
+                        }
+                        //llave de aristas
+                        foreach(QString subLibro, tempList){
+                            tempLibroAristas.clear();
+                            tempLibroAristas = subLibro.split("|");
+                            if(tempLibroKey[0] != tempLibroAristas[0] && tempLibroAristas[0] != ""){
+                                //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
+                                if(grafo[tempLibroKey[0]].contains(tempLibroAristas[0])){
+                                    grafo[tempLibroKey[0]][tempLibroAristas[0]]+=5;
+                                }else{
+                                    grafo[tempLibroKey[0]].insert(tempLibroAristas[0], 5);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        bd.close();
+
+    }
+
+    //iterar
+    QHash<QString, QHash<QString, int>>::iterator origenes = grafo.begin();
+    while(origenes != grafo.end()){
+        QHash<QString, int>::iterator destinos =origenes.value().begin();
+        while(destinos != origenes.value().end()){
+            qDebug()<<origenes.key()<<" : "<<destinos.key()<<", "<<destinos.value();
+            destinos++;
+        }
+        origenes++;
     }
 }

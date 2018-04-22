@@ -10,7 +10,6 @@
 #include "perfil.h"
 #include "cargarusuarios.h"
 #include "librodata.h"
-
 #include "QList" //necesario para el usuario y libro
 
 class Principal : public QObject
@@ -34,6 +33,9 @@ public:
     //funciones mergeSort para ordenar los libros
     void mergeSort(QList<LibroData> &A, int como);
     void merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &A, int como);
+
+    //funciones para el grafo de libros
+    void hacerGrafo();
 
     // getters and setters
     int getUsuarioActual() const;
@@ -80,6 +82,9 @@ private:
     QString liBuscar;
     int queBuscar;
     int cualBuscar;
+
+    //variables para el grafo
+    QHash<QString, QHash<QString, int>> grafo;
 };
 
 #endif // PRINCIPAL_H
