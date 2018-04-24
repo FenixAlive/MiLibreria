@@ -11,6 +11,7 @@
 #include "cargarusuarios.h"
 #include "librodata.h"
 #include "QList" //necesario para el usuario y libro
+#include "cargando.h"
 
 class Principal : public QObject
 {
@@ -24,7 +25,7 @@ public:
     QList<LibroData> leerBDLibros(QString ruta); //funcion para leer una base de datos de libros
     void agregarBDLibro(LibroData lib, QString ruta);
 
-    void leerBDUsuarios(QString ruta); // función para leer la base de datos de los usuarios
+    int leerBDUsuarios(QString ruta); // función para leer la base de datos de los usuarios
     void guardarBD(QList <Usuario> usu); //funcion para guardar una lista de usarios en su base de datos
     int revisarRepetidoPerfil(QString usu); //función que revisa que el nuevo usuario al modificar el perfil no se repita con otro
 
@@ -35,7 +36,7 @@ public:
     void merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &A, int como);
 
     //funciones para el grafo de libros
-    void hacerGrafo();
+    void hacerGrafo(int numUsu);
 
     // getters and setters
     int getUsuarioActual() const;
@@ -72,6 +73,7 @@ private:
     MainWindow *w; //crea un objeto del mainWindow
     Perfil *perf; //crea objeto de la ventana  y clase perfil
     CargarUsuarios *carUsu; //crea objeto de la clase cargarUsuarios
+    Cargando *carWait; //crea objeto de la clase Cargando
     QList <Usuario> usuarios; //crea una lista de usuarios donde se guardaran mas tarde
     QList <LibroData> libros; //crea una lista de libros vacia para todos los libros
     int usuarioActual; //crea una variable para guardar el usuario actual

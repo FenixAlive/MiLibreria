@@ -13,6 +13,7 @@ Principal::Principal(QObject *parent) : QObject(parent)
     w = new MainWindow();
     perf = new Perfil();
     carUsu = new CargarUsuarios();
+    carWait = new Cargando();
 
     //conectar señales de las clases
 
@@ -63,15 +64,14 @@ Principal::Principal(QObject *parent) : QObject(parent)
 
 void Principal::comenzar(){
 
-
     //lee la base de datos de usuarios
-    leerBDUsuarios(getDirbd());
+    int numUsu = leerBDUsuarios(getDirbd());
 
     //lee la base de datos de libros
     libros = leerBDLibros(getDirbdLibros()+"todos.txt");
 
     //hacer grafo para recomendados
-    hacerGrafo();
+    hacerGrafo(numUsu);
 
     //abre la ventana de iniciar sesión
     ini->show();
@@ -113,7 +113,8 @@ void Principal::setUsuarioActual(int value)
 
 //función para leer la base de datos de usuarios y guardarla en la Qlist de usuarios
 
-void Principal::leerBDUsuarios(QString ruta){
+int Principal::leerBDUsuarios(QString ruta){
+    int num = 0;
     QFile bd; //crear QFile para leer base de datos
     bd.setFileName(ruta); //agregarle la ruta a la base de datos
     if(!bd.exists()){ //si no existe el archivo
@@ -143,11 +144,13 @@ void Principal::leerBDUsuarios(QString ruta){
                     u.setCorreo(tempUsuList[4]);
                     usuarios.append(u);
                 }
+                num++;
             }
        }
     }
     //cierra la base de datos
     bd.close();
+    return num;
 }
 
 //funcion que lee la base de datos de libros con la ruta igual que la anterior base de datos
@@ -633,17 +636,23 @@ void Principal::merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &
     }
 }
 
-void Principal::hacerGrafo()
+void Principal::hacerGrafo(int numUsu)
 {
+    //sacar porcentaje de usuarios
+    float porc = 100.0/(float)numUsu;
     QHash<QString, int> aristas;
-    //QList <LibroData> librosFav = leerBDLibros(getDirbdLibros()+"fav/"+usuarios[getUsuarioActual()].getUsuario()+"_fv.txt");
     QFile bd;
     QString temp;
     QList <QString> tempList;
     QList <QString> tempLibroKey;
     QList <QString> tempLibroAristas;
+    QString keyGrafo, KeyArista;
+    int contadorUsu = 0;
     //iterar usuarios para leer sus libros y favoritos
     foreach(Usuario u, usuarios){
+        //imprimir porcentaje
+        contadorUsu++;
+        qDebug()<<"\tCargando...\t"<<porc*(float)contadorUsu<<"\t%";
         //leer el archivo mis libros
         bd.setFileName(getDirbdLibros()+"mis/"+u.getUsuario()+"_bks.txt");
         if(!bd.exists()){
@@ -661,24 +670,26 @@ void Principal::hacerGrafo()
                 //agregar la información a la lista
                 //llave del grafo
                 foreach(QString t, tempList){
-                    //borrar aristas previas
-                    aristas.clear();
                     tempLibroKey.clear();
                     tempLibroKey = t.split("|");
                     if(tempLibroKey[0] != ""){
-                        if(!grafo.contains(tempLibroKey[0])){
-                            grafo.insert(tempLibroKey[0], aristas);
+                        keyGrafo = tempLibroKey[0]+tempLibroKey[3];
+                        if(!grafo.contains(keyGrafo)){
+                            grafo.insert(keyGrafo, aristas);
                         }
                         //llave de aristas
                         foreach(QString subLibro, tempList){
                             tempLibroAristas.clear();
                             tempLibroAristas = subLibro.split("|");
-                            if(tempLibroKey[0] != tempLibroAristas[0] && tempLibroAristas[0] != ""){
+                            if(tempLibroAristas[0] != ""){
+                                KeyArista = tempLibroAristas[0]+tempLibroAristas[3];
+                                if(keyGrafo != KeyArista){
                                 //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
-                                if(grafo[tempLibroKey[0]].contains(tempLibroAristas[0])){
-                                    grafo[tempLibroKey[0]][tempLibroAristas[0]]++;
-                                }else{
-                                    grafo[tempLibroKey[0]].insert(tempLibroAristas[0], 1);
+                                    if(grafo[keyGrafo].contains(KeyArista)){
+                                        grafo[keyGrafo][KeyArista]++;
+                                    }else{
+                                        grafo[keyGrafo].insert(KeyArista, 1);
+                                    }
                                 }
                             }
                         }
@@ -705,24 +716,26 @@ void Principal::hacerGrafo()
                 //agregar la información a la lista
                 //llave del grafo
                 foreach(QString t, tempList){
-                    //borrar aristas previas
-                    aristas.clear();
                     tempLibroKey.clear();
                     tempLibroKey = t.split("|");
                     if(tempLibroKey[0] != ""){
-                        if(!grafo.contains(tempLibroKey[0])){
-                            grafo.insert(tempLibroKey[0], aristas);
+                        keyGrafo = tempLibroKey[0]+tempLibroKey[3];
+                        if(!grafo.contains(keyGrafo)){
+                            grafo.insert(keyGrafo, aristas);
                         }
                         //llave de aristas
                         foreach(QString subLibro, tempList){
                             tempLibroAristas.clear();
                             tempLibroAristas = subLibro.split("|");
-                            if(tempLibroKey[0] != tempLibroAristas[0] && tempLibroAristas[0] != ""){
-                                //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
-                                if(grafo[tempLibroKey[0]].contains(tempLibroAristas[0])){
-                                    grafo[tempLibroKey[0]][tempLibroAristas[0]]+=5;
-                                }else{
-                                    grafo[tempLibroKey[0]].insert(tempLibroAristas[0], 5);
+                            if(tempLibroAristas[0] != ""){
+                                KeyArista = tempLibroAristas[0]+tempLibroAristas[3];
+                                if(keyGrafo != KeyArista){
+                                    //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
+                                    if(grafo[keyGrafo].contains(KeyArista)){
+                                        grafo[keyGrafo][KeyArista]+=5;
+                                    }else{
+                                        grafo[keyGrafo].insert(KeyArista, 5);
+                                    }
                                 }
                             }
                         }
@@ -734,7 +747,6 @@ void Principal::hacerGrafo()
         bd.close();
 
     }
-
     //iterar
     QHash<QString, QHash<QString, int>>::iterator origenes = grafo.begin();
     while(origenes != grafo.end()){

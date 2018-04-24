@@ -33,7 +33,8 @@ SOURCES += \
     usuario.cpp \
     cargarusuarios.cpp \
     libro.cpp \
-    librodata.cpp
+    librodata.cpp \
+    cargando.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,7 +45,8 @@ HEADERS += \
     usuario.h \
     cargarusuarios.h \
     libro.h \
-    librodata.h
+    librodata.h \
+    cargando.h
 
 FORMS += \
         mainwindow.ui \
@@ -52,7 +54,8 @@ FORMS += \
     registrarse.ui \
     perfil.ui \
     cargarusuarios.ui \
-    libro.ui
+    libro.ui \
+    cargando.ui
 
 RESOURCES += \
     assets.qrc
