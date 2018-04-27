@@ -672,22 +672,33 @@ void Principal::hacerGrafo(int numUsu)
                 foreach(QString t, tempList){
                     tempLibroKey.clear();
                     tempLibroKey = t.split("|");
+                    //si la linea que se esta leyendo no esta vacia
                     if(tempLibroKey[0] != ""){
+                        //dar valor al nombre a buscar en el grafo como key
+                        //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
                         keyGrafo = tempLibroKey[0]+tempLibroKey[3];
+                        //si no existe el nodo en el grafo
                         if(!grafo.contains(keyGrafo)){
+                            aristas.clear();
+                            //crear el nodo del grafo y ponerle una arista vacia
                             grafo.insert(keyGrafo, aristas);
                         }
                         //llave de aristas
                         foreach(QString subLibro, tempList){
                             tempLibroAristas.clear();
                             tempLibroAristas = subLibro.split("|");
+                            //si la linea que se esta leyendo no esta vacia
                             if(tempLibroAristas[0] != ""){
+                                //dar valor al key de la arista a agregar al grafo
                                 KeyArista = tempLibroAristas[0]+tempLibroAristas[3];
+                                //revisa si la key del grafo no es la misma que el key de la arista a agregar
                                 if(keyGrafo != KeyArista){
-                                //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
+                                    //si ya existe la arista
                                     if(grafo[keyGrafo].contains(KeyArista)){
+                                        //agrega en 1 el valor del peso
                                         grafo[keyGrafo][KeyArista]++;
                                     }else{
+                                        //si no existe, crea la arista y le asigna el peso
                                         grafo[keyGrafo].insert(KeyArista, 1);
                                     }
                                 }
@@ -713,8 +724,6 @@ void Principal::hacerGrafo(int numUsu)
                 temp = bd.readAll();
                 tempList.clear();
                 tempList = temp.split("\n");
-                //agregar la información a la lista
-                //llave del grafo
                 foreach(QString t, tempList){
                     tempLibroKey.clear();
                     tempLibroKey = t.split("|");
@@ -723,14 +732,12 @@ void Principal::hacerGrafo(int numUsu)
                         if(!grafo.contains(keyGrafo)){
                             grafo.insert(keyGrafo, aristas);
                         }
-                        //llave de aristas
                         foreach(QString subLibro, tempList){
                             tempLibroAristas.clear();
                             tempLibroAristas = subLibro.split("|");
                             if(tempLibroAristas[0] != ""){
                                 KeyArista = tempLibroAristas[0]+tempLibroAristas[3];
                                 if(keyGrafo != KeyArista){
-                                    //0:titulo, 1:Autor, 2:Editorial, 3:Año, 4:Categoria
                                     if(grafo[keyGrafo].contains(KeyArista)){
                                         grafo[keyGrafo][KeyArista]+=5;
                                     }else{
@@ -747,14 +754,35 @@ void Principal::hacerGrafo(int numUsu)
         bd.close();
 
     }
-    //iterar
+    //iterar, imprimir el grafo y guardarlo en archivo de texto
     QHash<QString, QHash<QString, int>>::iterator origenes = grafo.begin();
+    QString ruta = getDirbdLibros()+"grafo.txt";
+    int gb=0;
+    bd.setFileName(ruta);
+    if(!bd.exists()){
+        qDebug() <<"El archivo de agregarBDLibro no existe en la ruta: "+ruta;
+    }else{
+        bd.open(QIODevice::WriteOnly | QIODevice::Text);
+        if(!bd.isOpen()){
+            qDebug() <<"El archivo de BDLibro no se pudo abrir en la ruta: "+ruta;
+        }else{
+            gb=1;
+        }
+    }
     while(origenes != grafo.end()){
         QHash<QString, int>::iterator destinos =origenes.value().begin();
         while(destinos != origenes.value().end()){
             qDebug()<<origenes.key()<<" : "<<destinos.key()<<", "<<destinos.value();
+        //base de datos
+        if(gb){
+            QTextStream out(&bd);
+            out << origenes.key() <<" : "<<destinos.key() <<" = "<<destinos.value() <<"\n";
+            bd.flush();
+        }
+
             destinos++;
         }
         origenes++;
     }
+    bd.close();
 }

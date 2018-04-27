@@ -18,7 +18,8 @@ void Cargando::setValorTexto(QString text)
     ui->texto->setText(text);
 }
 
-void Cargando::setValorBar(float val)
+int Cargando::setValorBar(float val)
 {
-   ui->progressBar->setValue((int)val);
+    ui->progressBar->setValue((int)val);
+    return 1;
 }

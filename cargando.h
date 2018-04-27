@@ -15,7 +15,7 @@ public:
     explicit Cargando(QWidget *parent = 0);
     ~Cargando();
     void setValorTexto(QString text);
-    void setValorBar(float val);
+    int setValorBar(float val);
 
 private:
     Ui::Cargando *ui;
