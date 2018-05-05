@@ -44,6 +44,9 @@ Principal::Principal(QObject *parent) : QObject(parent)
     QObject::connect(w, SIGNAL(ordenarLibros(int)),
                      this, SLOT(ordenarLibros(int)));
 
+    QObject::connect(w, SIGNAL(recomendarSignal()),
+                     this, SLOT(recomendadosSlot()));
+
     //clase perfil
     QObject::connect(perf, SIGNAL(guardarPerfilSignal(QString)),
                      this, SLOT(guardarPerfil(QString)));
@@ -235,6 +238,11 @@ void Principal::perfilShow(){
     perf->show();
     //llama a la función de perfil para agregar la información a al ventana del usuario actual
     perf->agregarInfo(usuarios[getUsuarioActual()]);
+}
+
+void Principal::recomendadosSlot()
+{
+   recomendarLibros();
 }
 
 void Principal::cargarUsuShow()
@@ -453,7 +461,6 @@ void Principal::verRelacionLibros()
         libros[l.getIndex()] = l;
     }
 }
-
 
 //función que busca un libro en la base de datos de libros
 
@@ -795,7 +802,6 @@ void Principal::recomendarLibros()
 {
     QString titKey, titAri;
     int valGrafo, valRec[3]={0,0,0};
-    LibroData recomendados[3];
     //iterar mis libros
     foreach(LibroData libK, libros){
         //si esta en mis libros

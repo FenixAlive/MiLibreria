@@ -316,6 +316,7 @@ background-color:#f1f1f1;</string>
      <string>Inicio</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionRecomendados"/>
     <addaction name="actionTodos"/>
     <addaction name="actionMis_Libros"/>
     <addaction name="actionFavoritos"/>
@@ -366,8 +367,9 @@ background-color:#f1f1f1;</string>
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
+   <addaction name="actionRecomendados"/>
    <addaction name="actionTodos"/>
    <addaction name="actionMis_Libros"/>
    <addaction name="actionFavoritos"/>
@@ -604,6 +606,15 @@ background-color:#f1f1f1;</string>
    </property>
    <property name="text">
     <string>Categoria</string>
+   </property>
+  </action>
+  <action name="actionRecomendados">
+   <property name="icon">
+    <iconset resource="assets.qrc">
+     <normaloff>:/images/img/recomendados.png</normaloff>:/images/img/recomendados.png</iconset>
+   </property>
+   <property name="text">
+    <string>Recomendados</string>
    </property>
   </action>
  </widget>

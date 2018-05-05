@@ -299,3 +299,10 @@ void MainWindow::on_actionOrderCategoria_triggered()
         ui->actionOrderCategoria->setChecked(true);
     }
 }
+
+void MainWindow::on_actionRecomendados_triggered()
+{
+   ui->resTitulo->setText("Recomendados"); //pone texto en el label de titulo
+   ui->listLibrosWidget->clear(); //limpia el widget de libros
+   emit recomendarSignal();
+}

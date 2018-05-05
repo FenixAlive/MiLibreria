@@ -4,3 +4,5 @@ Confabulario|Arreola, Juan José|Fondo de Cultura Económica|1961|Antología
 Obras Completas|Azuela, Mariano|Fondo de Cultura Económica|1916|Antología
 Las Yeguas Finas|Loaeza, Guadalupe|Planeta|2003|Narrativa
 Visión de Anahuac y otros ensayos|Reyes, Alfonso|Fondo de Cultura Económica|1983|Expositivo
+El Código da Vinci|Brown, Dan|Umbriel|2004|Narrativa
+Paulo Freire y la Educación Liberadora|Escobar G., Miguel|Ediciones el Caballito|1985|Expositivo

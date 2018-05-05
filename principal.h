@@ -68,7 +68,7 @@ private slots:
     void regUsuShow(); //recibe señal para abrir ventana de registrar usuario
     void iniUsuShow(); //recibe señal para abrir ventana de iniciar sesion
     void perfilShow(); //recibe señal para abrir ventana de cambiar perfil
-    //poner función para editar listas al dar clic en boton de libros
+    void recomendadosSlot(); //recibe señal para imprimir los libros recomendados
 
 private:
     Iniciar *ini; //crea un objeto de la ventana iniciar sesión
@@ -88,8 +88,11 @@ private:
     int queBuscar;
     int cualBuscar;
 
-    //variables para el grafo
+    //variable para el grafo
     QHash<QString, QHash<QString, int>> grafo;
+
+    //Variable para libros recomendados
+    LibroData recomendados[3];
 };
 
 #endif // PRINCIPAL_H
