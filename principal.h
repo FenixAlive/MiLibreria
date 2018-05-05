@@ -35,8 +35,11 @@ public:
     void mergeSort(QList<LibroData> &A, int como);
     void merge(QList<LibroData> B, QList<LibroData> C, QList<LibroData> &A, int como);
 
-    //funciones para el grafo de libros
+    //funcion para el grafo de libros
     void hacerGrafo(int numUsu);
+
+    //función para recomendar libros
+    void recomendarLibros();
 
     // getters and setters
     int getUsuarioActual() const;

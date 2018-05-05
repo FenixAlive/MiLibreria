@@ -338,6 +338,8 @@ void Principal::iniciarSesion(QString user, QString pass){
             setUsuarioActual(count);
             //carga lista de libros a fav y mis libros
             verRelacionLibros();
+            //busca los libros para recomendar
+            recomendarLibros();
             break;
         }
         ++it;
@@ -752,8 +754,9 @@ void Principal::hacerGrafo(int numUsu)
             }
         }
         bd.close();
-
     }
+    qDebug()<<"\tIniciando.. 100    %";
+    /*
     //iterar, imprimir el grafo y guardarlo en archivo de texto
     QHash<QString, QHash<QString, int>>::iterator origenes = grafo.begin();
     QString ruta = getDirbdLibros()+"grafo.txt";
@@ -785,4 +788,57 @@ void Principal::hacerGrafo(int numUsu)
         origenes++;
     }
     bd.close();
+*/
+}
+
+void Principal::recomendarLibros()
+{
+    QString titKey, titAri;
+    int valGrafo, valRec[3]={0,0,0};
+    LibroData recomendados[3];
+    //iterar mis libros
+    foreach(LibroData libK, libros){
+        //si esta en mis libros
+        if(libK.getBoton()){
+            titKey = libK.getTitulo()+libK.getAnio();
+            foreach(LibroData libA, libros){
+                //si no esta en mis libros
+                if(!libA.getBoton()){
+                    titAri = libA.getTitulo()+libA.getAnio();
+                    if(grafo[titKey].contains(titAri)){
+                        valGrafo = grafo[titKey][titAri];
+                        if(valGrafo > valRec[0]){
+                            qDebug()<<"cero: "<<titKey<<" : "<<titAri<<valGrafo;
+                            valRec[2] = valRec[1];
+                            valRec[1] = valRec[0];
+                            valRec[0] = valGrafo;
+                            recomendados[2]=recomendados[1];
+                            recomendados[1] = recomendados[0];
+                            recomendados[0] = libA;
+                        }else if(valGrafo > valRec[1]){
+                           qDebug()<<"uno: "<<titKey<<" : "<<titAri<<valGrafo;
+                            valRec[2] = valRec[1];
+                            valRec[1] = valGrafo;
+                            recomendados[2] =recomendados[1];
+                            recomendados[1] = libA;
+                        }else if(valGrafo > valRec[2]){
+                            qDebug()<<"dos: "<<titKey<<" : "<<titAri<<valGrafo;
+                            valRec[2] = valRec[1];
+                            valRec[2] = valGrafo;
+                            recomendados[2] = libA;
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //imprimir libros recomendados
+    w->dibujarLibros(&recomendados[0]);
+    w->dibujarLibros(&recomendados[1]);
+    w->dibujarLibros(&recomendados[2]);
+    qDebug()<<"\n------------------------------------\n";
+    qDebug()<<"Recomendado 1: "<<recomendados[0].getTitulo()+recomendados[0].getAnio()<<valRec[0];
+    qDebug()<<"Recomendado 2: "<<recomendados[1].getTitulo()+recomendados[1].getAnio()<<valRec[1];
+    qDebug()<<"Recomendado 3: "<<recomendados[2].getTitulo()<<valRec[2];
 }
