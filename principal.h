@@ -38,6 +38,9 @@ public:
     //funcion para el grafo de libros
     void hacerGrafo(int numUsu);
 
+    //función para actualizar grafo
+    void actualizarGrafo(LibroData miLibro);
+
     //función para recomendar libros
     void recomendarLibros();
 

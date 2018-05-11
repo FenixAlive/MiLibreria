@@ -529,6 +529,9 @@ void Principal::guardarUpgradeLibro(LibroData lib)
     }
     if(agregar)
         agregarBDLibro(lib, ruta);
+    //actualiza el grafo
+    actualizarGrafo(lib);
+    //si esta en recomendados actualizar recomendados
 }
 
 //funcion para ordenar los libros
@@ -798,6 +801,54 @@ void Principal::hacerGrafo(int numUsu)
 */
 }
 
+//función para actualizar el grafo al agregar un libro a mis libros o favoritos
+void Principal::actualizarGrafo(LibroData miLibro)
+{
+    QString key, arista;
+    QHash<QString, int> ari;
+    key = miLibro.getTitulo()+miLibro.getAnio();
+    if(!grafo.contains(key)){
+            grafo.insert(key, ari);
+    }
+    if(miLibro.getBoton() == 1){
+        foreach(LibroData lib, libros){
+            //si el libro es mis libro
+            if(lib.getBoton() == 1){
+                arista = lib.getTitulo()+lib.getAnio();
+                //conectar el key con la arista
+                if(grafo[key].contains(arista)){
+                    grafo[key][arista]++;
+                }else{
+                    grafo[key].insert(arista, 1);
+                }
+                //conectar la arista con el key
+                if(grafo[arista].contains(key))
+                    grafo[arista][key]++;
+                else
+                    grafo[arista].insert(key, 1);
+            }
+        }
+    }else if(miLibro.getBoton() == 2){
+        foreach(LibroData lib, libros){
+            //si el libro es mis libro
+            if(lib.getBoton() == 2){
+                arista = lib.getTitulo()+lib.getAnio();
+                if(grafo[key].contains(arista)){
+                    grafo[key][arista]+=5;
+                }else{
+                    grafo[key].insert(arista, 5);
+                }
+                //conectar la arista con el key
+                if(grafo[arista].contains(key))
+                    grafo[arista][key]+=5;
+                else
+                    grafo[arista].insert(key, 5);
+            }
+        }
+    }
+}
+
+//función para recomendar Libros
 void Principal::recomendarLibros()
 {
     QString titKey, titAri;
@@ -808,12 +859,13 @@ void Principal::recomendarLibros()
         if(libK.getBoton()){
             titKey = libK.getTitulo()+libK.getAnio();
             foreach(LibroData libA, libros){
-                //si no esta en mis libros
+                //si la arista no esta en mis libros
                 if(!libA.getBoton()){
                     titAri = libA.getTitulo()+libA.getAnio();
-                    if(grafo[titKey].contains(titAri)){
-                        valGrafo = grafo[titKey][titAri];
-                        if(valGrafo > valRec[0]){
+                    //si el grafo contiene el libro arista y no es un recomendado anterior
+                    if(grafo[titKey].contains(titAri) && recomendados[0].getTitulo()+recomendados[0].getAnio() != titAri && recomendados[1].getTitulo()+recomendados[1].getAnio() != titAri){
+                        valGrafo = grafo[titKey][titAri]; //guarda el peso de la conección
+                        if(valGrafo > valRec[0] ){
                             qDebug()<<"cero: "<<titKey<<" : "<<titAri<<valGrafo;
                             valRec[2] = valRec[1];
                             valRec[1] = valRec[0];
@@ -840,11 +892,15 @@ void Principal::recomendarLibros()
         }
     }
     //imprimir libros recomendados
-    w->dibujarLibros(&recomendados[0]);
-    w->dibujarLibros(&recomendados[1]);
-    w->dibujarLibros(&recomendados[2]);
+    if(recomendados[0].getTitulo() != "")
+        w->dibujarLibros(&recomendados[0]);
+    if(recomendados[1].getTitulo() != "" )
+        w->dibujarLibros(&recomendados[1]);
+    if(recomendados[2].getTitulo() != "")
+        w->dibujarLibros(&recomendados[2]);
     qDebug()<<"\n------------------------------------\n";
     qDebug()<<"Recomendado 1: "<<recomendados[0].getTitulo()+recomendados[0].getAnio()<<valRec[0];
     qDebug()<<"Recomendado 2: "<<recomendados[1].getTitulo()+recomendados[1].getAnio()<<valRec[1];
-    qDebug()<<"Recomendado 3: "<<recomendados[2].getTitulo()<<valRec[2];
+    qDebug()<<"Recomendado 3: "<<recomendados[2].getTitulo()+recomendados[2].getAnio()<<valRec[2];
+    qDebug()<<"\n------------------------------------\n";
 }
