@@ -90,6 +90,8 @@ private:
     QString liBuscar;
     int queBuscar;
     int cualBuscar;
+    //variable para guardar si la ultima busqueda fue recomendados
+    int verRec = 1;
 
     //variable para el grafo
     QHash<QString, QHash<QString, int>> grafo;

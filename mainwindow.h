@@ -17,6 +17,7 @@ public:
     ~MainWindow();
 
     void dibujarLibros(LibroData *lib); //función que agrega un widget libro a la lista de widgets
+    void limpiarList();
 
 private slots:
     void on_actionSalir_triggered();    //sale del programa

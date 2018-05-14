@@ -367,7 +367,7 @@ background-color:#f1f1f1;</string>
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionRecomendados"/>
    <addaction name="actionTodos"/>
@@ -615,6 +615,9 @@ background-color:#f1f1f1;</string>
    </property>
    <property name="text">
     <string>Recomendados</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

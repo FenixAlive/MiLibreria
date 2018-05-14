@@ -466,6 +466,7 @@ void Principal::verRelacionLibros()
 
 void Principal::buscarLibrosSignal(QString li, int que, int cual)
 {
+    verRec = 0;
     liBuscar = li;
     queBuscar = que;
     cualBuscar = cual;
@@ -531,7 +532,6 @@ void Principal::guardarUpgradeLibro(LibroData lib)
         agregarBDLibro(lib, ruta);
     //actualiza el grafo
     actualizarGrafo(lib);
-    //si esta en recomendados actualizar recomendados
 }
 
 //funcion para ordenar los libros
@@ -554,7 +554,11 @@ void Principal::ordenarLibros(int como)
           i++;
       }
       //reimprimir lista ahora ordenada
-      buscarLibrosSignal(liBuscar, queBuscar, cualBuscar);
+      if(!verRec)
+        buscarLibrosSignal(liBuscar, queBuscar, cualBuscar);
+      else
+        recomendarLibros();
+
 }
 
 void Principal::mergeSort(QList<LibroData> &A, int como)
@@ -846,11 +850,18 @@ void Principal::actualizarGrafo(LibroData miLibro)
             }
         }
     }
+    //si estoy en ventana de recomendados
+    if(verRec){
+        //limpiar lista y recomendar libros
+        w->limpiarList();
+        recomendarLibros();
+    }
 }
 
 //función para recomendar Libros
 void Principal::recomendarLibros()
 {
+    verRec = 1;
     QString titKey, titAri;
     int valGrafo, valRec[3]={0,0,0};
     //iterar mis libros

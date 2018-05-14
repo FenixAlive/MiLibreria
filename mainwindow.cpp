@@ -69,6 +69,11 @@ void MainWindow::dibujarLibros(LibroData *lib)
                                       this, SLOT(upgradeLibro(LibroData)));
 }
 
+void MainWindow::limpiarList()
+{
+    ui->listLibrosWidget->clear();
+}
+
 //función que corre al cambiar el texto en el buscador de libros
 void MainWindow::on_buscarInput_textChanged(const QString &arg1)
 {
